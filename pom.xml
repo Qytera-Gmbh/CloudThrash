@@ -9,7 +9,7 @@
   <version>0.0.1</version>
 
   <properties>
-    <maven.compiler.release>11</maven.compiler.release>
+    <maven.compiler.release>17</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <gatling.version>3.11.3</gatling.version>
     <gatling-maven-plugin.version>4.9.4</gatling-maven-plugin.version>
