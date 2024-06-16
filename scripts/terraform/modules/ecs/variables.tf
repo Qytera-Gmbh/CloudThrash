@@ -1,0 +1,9 @@
+variable "aws_region" {}
+variable "aws_profile" {}
+variable "aws_account_id" {}
+variable "ecr_repository" {}
+variable "slave_memory" {}
+variable "slave_cpu" {}
+variable "slave_count" {}
+variable "master_memory" {}
+variable "master_cpu" {}
