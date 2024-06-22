@@ -25,6 +25,10 @@ resource "aws_iam_role" "ecs_task_execution_role" {
   ]
 }
 
+locals {
+  current_timestamp = formatdate("YYYY-MM-DD-HH-mm", timestamp())
+}
+
 resource "aws_ecs_task_definition" "task" {
   family                   = "loadtesting-task"
   requires_compatibilities = ["FARGATE"]
@@ -58,9 +62,20 @@ resource "aws_ecs_task_definition" "task" {
         {
           "name" : "AWS_DEFAULT_REGION",
           "value" : var.aws_region
+        },
+        {
+          "name" : "S3_BUCKET_NAME",
+          "value" : var.s3_bucket_name
+        },
+        {
+          "name" : "TOTAL_TASKS",
+          "value" : tostring(var.slave_count)
+        },
+        {
+          "name" : "RUN_TIMESTAMP",
+          "value" : local.current_timestamp
         }
-      ],
-      "command" : ["sh", "-c", "rm -rf ./target || true && mvn gatling:test && TIMESTAMP=$(date +%Y-%m-%d-%H-%M) && aws s3 cp ./target/gatling s3://gatling-distributed-loadtesting-bucket/gatling-results-$TIMESTAMP/ --recursive"]
+      ]
     }
   ])
 }
@@ -69,11 +84,11 @@ resource "aws_iam_role" "ecs_task_role" {
   name = "ecsTaskRole"
 
   assume_role_policy = jsonencode({
-    Version = "2012-10-17"
+    Version = "2012-10-17",
     Statement = [
       {
-        Action = "sts:AssumeRole"
-        Effect = "Allow"
+        Action = "sts:AssumeRole",
+        Effect = "Allow",
         Principal = {
           Service = "ecs-tasks.amazonaws.com"
         }
@@ -86,12 +101,11 @@ resource "aws_iam_role" "ecs_task_role" {
   ]
 }
 
-
 resource "aws_ecs_service" "service" {
   name            = "loadtesting-service"
   cluster         = aws_ecs_cluster.ecs_cluster.id
   task_definition = aws_ecs_task_definition.task.arn
-  desired_count   = 1
+  desired_count   = var.slave_count
   launch_type     = "FARGATE"
 
   network_configuration {
@@ -100,6 +114,7 @@ resource "aws_ecs_service" "service" {
     assign_public_ip = true
   }
 }
+
 
 resource "aws_iam_role_policy_attachment" "ecs_task_execution_role_attach" {
   role       = aws_iam_role.ecs_task_execution_role.name
@@ -110,10 +125,10 @@ resource "aws_iam_policy" "s3_access_policy" {
   name        = "ecsS3AccessPolicy"
   description = "Policy to allow ECS tasks to upload files to S3"
   policy = jsonencode({
-    Version = "2012-10-17"
+    Version = "2012-10-17",
     Statement = [
       {
-        Effect = "Allow"
+        Effect = "Allow",
         Action = [
           "s3:PutObject",
           "s3:PutObjectAcl",
@@ -121,7 +136,7 @@ resource "aws_iam_policy" "s3_access_policy" {
           "s3:PutObjectVersionAcl",
           "s3:PutObjectVersionTagging"
         ]
-        Resource = "arn:aws:s3:::gatling-distributed-loadtesting-bucket/gatling-results/*"
+        Resource = "arn:aws:s3:::${var.s3_bucket_name}/gatling-results/*"
       }
     ]
   })
