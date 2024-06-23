@@ -48,6 +48,9 @@ echo "Executing main task..."
 rm -rf ./target || true
 mvn gatling:test -Dgatling.noReports=true
 
+# delete all the ready files again
+aws s3 rm s3://$S3_BUCKET_NAME/gatling-results/$RUN_TIMESTAMP/ready/ --recursive
+
 # Upload the results to S3 using the timestamp from the environment variable
 echo "Uploading results to S3..."
 for file in $(find ./target/gatling -type f -name simulation.log); do

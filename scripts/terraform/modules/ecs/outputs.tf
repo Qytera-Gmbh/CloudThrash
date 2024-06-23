@@ -5,3 +5,7 @@ output "ecs_cluster_name" {
 output "slave_count" {
   value = var.slave_count
 }
+
+output "current_timestamp" {
+  value = local.current_timestamp
+}

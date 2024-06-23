@@ -5,11 +5,15 @@ set -e
 pushd $(dirname $0) > /dev/null
 
 . ./variables.sh
+./check-dependencies.sh
 ./create-variables.sh
 ./deploy-docker-container.sh
 
-pushd terraform > /dev/null
+pushd .. > /dev/null
+./mvnw clean package
+popd > /dev/null
 
+pushd terraform > /dev/null
 terraform init
 terraform apply -auto-approve
 
@@ -62,6 +66,7 @@ done
 
 popd > /dev/null
 
+./create-report.sh
 ./stop-test.sh
 
 popd > /dev/null

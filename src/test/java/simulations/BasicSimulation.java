@@ -17,6 +17,6 @@ public class BasicSimulation extends Simulation {
                         .on(exec(http("request_1").get("/")).pause(10)); // Pause for 10 seconds between requests
 
         {
-                setUp(scn.injectOpen(atOnceUsers(1)).protocols(httpProtocol)).maxDuration(30);
+                setUp(scn.injectOpen(atOnceUsers(5)).protocols(httpProtocol)).maxDuration(30);
         }
 }
