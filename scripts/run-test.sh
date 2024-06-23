@@ -4,14 +4,14 @@ set -e
 
 pushd $(dirname $0) > /dev/null
 
+echo "### SECTION [1/6] Initializing ###"
+
 . ./variables.sh
 ./check-dependencies.sh
 ./create-variables.sh
 ./deploy-docker-container.sh
 
-pushd .. > /dev/null
-./mvnw clean package
-popd > /dev/null
+echo "### SECTION [2/6] Creating Infrastructure ###"
 
 pushd terraform > /dev/null
 terraform init
@@ -32,7 +32,7 @@ get_running_task_arn() {
 }
 
 # Wait for the task to start
-echo "Waiting for the task to start..."
+echo "### SECTION [3/6] Waiting for Task Execution ###"
 while true; do
   get_running_task_arn
   if [ "$TASK_ARN" != "None" ]; then
@@ -44,6 +44,7 @@ while true; do
 done
 
 # Function to check the status of the ECS task
+echo "### SECTION [4/6] Monitoring Task Status ###"
 check_task_status() {
   TASK_STATUS=$(aws ecs describe-tasks \
     --cluster $ECS_CLUSTER_NAME \
@@ -66,7 +67,10 @@ done
 
 popd > /dev/null
 
-./create-report.sh
+echo "### SECTION [5/6] Destroying Infrastructure ###"
 ./stop-test.sh
+
+echo "### SECTION [6/6] Creating Report ###"
+./create-report.sh
 
 popd > /dev/null

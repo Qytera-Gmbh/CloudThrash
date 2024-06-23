@@ -9,15 +9,16 @@ RUN apt-get update && \
 WORKDIR /app
 
 # Copy the Maven project files
-COPY pom.xml /app
+COPY simulation/pom.xml /app
+COPY scripts/docker/entrypoint.sh /app
 RUN mvn dependency:go-offline
 
 # Copy the source files
-COPY /src /app/src
+COPY /simulation/src /app/src
 RUN mvn clean install -DskipTests
 
 # Ensure the entry point script has executable permissions
-RUN chmod +x src/entrypoint.sh
+RUN chmod +x entrypoint.sh
 
 # Set the entry point to the script in its current location
-ENTRYPOINT ["./src/entrypoint.sh"]
+ENTRYPOINT ["./entrypoint.sh"]

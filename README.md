@@ -4,12 +4,13 @@ This project demonstrates distributed load testing with Gatling. It uses Gatling
 
 ## Requirements
 
-- Java 17
-- Maven
-- Docker
-- Terraform
-- AWS Account
-- bash (on Windows a git bash is enough)
+-   Java 17
+-   Maven
+-   Docker
+-   Terraform
+-   AWS Account
+-   AWS CLI
+-   bash (on Windows a git bash is enough)
 
 ## Setup
 
@@ -52,6 +53,7 @@ _TODO: add table with description when ready_
 ### Local
 
 ```bash
+cd simulation
 ./mvnw gatling:test
 ```
 
@@ -61,7 +63,7 @@ _TODO: add table with description when ready_
 ./scripts/run-test.sh
 ```
 
-Stop the test execution and delete not required resources:
+Stop the test execution and delete not required resources (done automatically after test execution):
 
 ```bash
 ./scripts/stop-test.sh

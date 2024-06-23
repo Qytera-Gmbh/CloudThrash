@@ -37,3 +37,9 @@ variable "master_memory" {
 variable "master_cpu" {
   description = "CPU for master"
 }
+
+variable "common_tags" {
+  default = {
+    Project = "LoadTesting"
+  }
+}

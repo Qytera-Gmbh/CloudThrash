@@ -1,8 +1,10 @@
 resource "aws_vpc" "main" {
+  tags       = var.common_tags
   cidr_block = "10.0.0.0/16"
 }
 
 resource "aws_subnet" "subnet1" {
+  tags                    = var.common_tags
   vpc_id                  = aws_vpc.main.id
   cidr_block              = "10.0.1.0/24"
   availability_zone       = "${var.aws_region}a"
@@ -10,10 +12,12 @@ resource "aws_subnet" "subnet1" {
 }
 
 resource "aws_internet_gateway" "main" {
+  tags   = var.common_tags
   vpc_id = aws_vpc.main.id
 }
 
 resource "aws_route_table" "public" {
+  tags   = var.common_tags
   vpc_id = aws_vpc.main.id
 
   route {
@@ -28,6 +32,8 @@ resource "aws_route_table_association" "a" {
 }
 
 resource "aws_security_group" "ecs_sg" {
+  tags = var.common_tags
+
   vpc_id = aws_vpc.main.id
 
   ingress {

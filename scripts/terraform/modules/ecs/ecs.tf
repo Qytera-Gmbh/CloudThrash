@@ -1,9 +1,11 @@
 resource "aws_ecs_cluster" "ecs_cluster" {
   name = "loadtesting-cluster"
+  tags = var.common_tags
 }
 
 resource "aws_iam_role" "ecs_task_execution_role" {
   name = "ecsTaskExecutionRole"
+  tags = var.common_tags
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
@@ -30,6 +32,7 @@ locals {
 }
 
 resource "aws_ecs_task_definition" "task" {
+  tags                     = var.common_tags
   family                   = "loadtesting-task"
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
@@ -82,6 +85,7 @@ resource "aws_ecs_task_definition" "task" {
 
 resource "aws_iam_role" "ecs_task_role" {
   name = "ecsTaskRole"
+  tags = var.common_tags
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
@@ -102,6 +106,7 @@ resource "aws_iam_role" "ecs_task_role" {
 }
 
 resource "aws_ecs_service" "service" {
+  tags            = var.common_tags
   name            = "loadtesting-service"
   cluster         = aws_ecs_cluster.ecs_cluster.id
   task_definition = aws_ecs_task_definition.task.arn
@@ -121,6 +126,7 @@ resource "aws_iam_role_policy_attachment" "ecs_task_execution_role_attach" {
 }
 
 resource "aws_iam_policy" "s3_access_policy" {
+  tags        = var.common_tags
   name        = "ecsS3AccessPolicy"
   description = "Policy to allow ECS tasks to upload files to S3"
   policy = jsonencode({

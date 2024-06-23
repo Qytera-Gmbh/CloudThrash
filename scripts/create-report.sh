@@ -7,7 +7,7 @@ pushd $(dirname $0) > /dev/null
 pushd terraform > /dev/null
 current_timestamp=$(terraform output -raw current_timestamp)
 popd > /dev/null
-pushd .. > /dev/null
+pushd ../simulation > /dev/null
 
 # Construct the S3 path
 S3_PATH="s3://${S3_BUCKET_NAME}/gatling-results/${current_timestamp}"
@@ -31,7 +31,7 @@ echo "Downloaded .log files from $S3_PATH to $LOCAL_DIR"
 aws s3 cp $LOCAL_DIR $S3_PATH --recursive --profile $AWS_PROFILE
 
 # Create the results directory if it doesn't exist
-RESULTS_DIR="results/$current_timestamp"
+RESULTS_DIR="../results/$current_timestamp"
 mkdir -p $RESULTS_DIR
 
 # Copy all files from the local directory to the results directory

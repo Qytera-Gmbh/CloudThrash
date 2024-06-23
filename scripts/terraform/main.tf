@@ -15,11 +15,13 @@ module "ecs" {
   master_memory  = var.master_memory
   master_cpu     = var.master_cpu
   s3_bucket_name = var.s3_bucket_name
+  common_tags    = var.common_tags
 }
 
 module "s3" {
   source         = "./modules/s3"
   s3_bucket_name = var.s3_bucket_name
+  common_tags    = var.common_tags
 }
 
 terraform {
