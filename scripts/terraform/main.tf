@@ -12,8 +12,6 @@ module "ecs" {
   slave_memory   = var.slave_memory
   slave_cpu      = var.slave_cpu
   slave_count    = var.slave_count
-  master_memory  = var.master_memory
-  master_cpu     = var.master_cpu
   s3_bucket_name = var.s3_bucket_name
   common_tags    = var.common_tags
 }

@@ -27,8 +27,12 @@ echo "Downloaded .log files from $S3_PATH to $LOCAL_DIR"
 # Create the Gatling report
 ./mvnw gatling:test -Dgatling.reportsOnly=$current_timestamp
 
-# Upload the entire directory back to S3
-aws s3 cp $LOCAL_DIR $S3_PATH --recursive --profile $AWS_PROFILE
+# Compress the entire local directory using 7z
+ZIP_FILE="report.7z"
+7z a $ZIP_FILE $LOCAL_DIR/*
+
+# Upload the 7z file back to S3
+aws s3 cp $ZIP_FILE $S3_PATH/$ZIP_FILE --profile $AWS_PROFILE
 
 # Create the results directory if it doesn't exist
 RESULTS_DIR="../results/$current_timestamp"
@@ -37,7 +41,9 @@ mkdir -p $RESULTS_DIR
 # Copy all files from the local directory to the results directory
 cp -r $LOCAL_DIR/* $RESULTS_DIR/
 
+# Clean up
 rm -rf $LOCAL_DIR
+rm $ZIP_FILE
 
 popd > /dev/null
 popd > /dev/null

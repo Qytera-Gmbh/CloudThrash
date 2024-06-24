@@ -5,7 +5,5 @@ variable "ecr_repository" {}
 variable "slave_memory" {}
 variable "slave_cpu" {}
 variable "slave_count" {}
-variable "master_memory" {}
-variable "master_cpu" {}
 variable "s3_bucket_name" {}
 variable "common_tags" {}

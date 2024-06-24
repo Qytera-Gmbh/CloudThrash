@@ -14,8 +14,6 @@ aws_account_id = "$AWS_ACCOUNT_ID"
 slave_memory = $SLAVE_MEMORY
 slave_cpu = $SLAVE_CPU
 slave_count = $SLAVE_COUNT
-master_memory = $MASTER_MEMORY
-master_cpu = $MASTER_CPU
 EOL
 
 popd > /dev/null

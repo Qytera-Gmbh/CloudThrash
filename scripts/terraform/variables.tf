@@ -30,14 +30,6 @@ variable "slave_count" {
   description = "Number of slaves"
 }
 
-variable "master_memory" {
-  description = "Memory for master"
-}
-
-variable "master_cpu" {
-  description = "CPU for master"
-}
-
 variable "common_tags" {
   default = {
     Project = "LoadTesting"
