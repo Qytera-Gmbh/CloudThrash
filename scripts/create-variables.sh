@@ -4,7 +4,7 @@ pushd $(dirname $0) > /dev/null
 
 . ./variables.sh
 
-cat > terraform/terraform.tfvars <<EOL
+cat > ../terraform/terraform.tfvars <<EOL
 aws_profile = "$AWS_PROFILE"
 aws_region = "$AWS_REGION"
 ecr_repository = "$ECR_REPOSITORY"

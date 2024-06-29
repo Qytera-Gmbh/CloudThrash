@@ -4,7 +4,7 @@ pushd $(dirname $0) > /dev/null
 
 . ./variables.sh
 
-pushd terraform > /dev/null
+pushd ../terraform > /dev/null
 current_timestamp=$(terraform output -raw current_timestamp)
 popd > /dev/null
 pushd ../simulation > /dev/null

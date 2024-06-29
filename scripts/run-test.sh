@@ -13,7 +13,7 @@ echo "### SECTION [1/6] Initializing ###"
 
 echo "### SECTION [2/6] Creating Infrastructure ###"
 
-pushd terraform > /dev/null
+pushd ../terraform > /dev/null
 terraform init
 terraform apply -auto-approve
 
