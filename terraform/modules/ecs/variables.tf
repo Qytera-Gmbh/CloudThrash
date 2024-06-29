@@ -7,3 +7,5 @@ variable "slave_cpu" {}
 variable "slave_count" {}
 variable "s3_bucket_name" {}
 variable "common_tags" {}
+variable "subnet_id" {}
+variable "security_group_id" {}

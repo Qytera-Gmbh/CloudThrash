@@ -31,6 +31,12 @@ locals {
   current_timestamp = formatdate("YYYY-MM-DD-HH-mm", timestamp())
 }
 
+resource "null_resource" "force_redeploy" {
+  triggers = {
+    timestamp = local.current_timestamp
+  }
+}
+
 resource "aws_ecs_task_definition" "task" {
   tags                     = var.common_tags
   family                   = "loadtesting-task"
@@ -81,6 +87,10 @@ resource "aws_ecs_task_definition" "task" {
       ]
     }
   ])
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_iam_role" "ecs_task_role" {
@@ -114,9 +124,15 @@ resource "aws_ecs_service" "service" {
   launch_type     = "FARGATE"
 
   network_configuration {
-    subnets          = [aws_subnet.subnet1.id]
-    security_groups  = [aws_security_group.ecs_sg.id]
+    subnets          = [var.subnet_id]
+    security_groups  = [var.security_group_id]
     assign_public_ip = true
+  }
+
+  depends_on = [null_resource.force_redeploy]
+
+  lifecycle {
+    create_before_destroy = true
   }
 }
 
@@ -126,9 +142,10 @@ resource "aws_iam_role_policy_attachment" "ecs_task_execution_role_attach" {
 }
 
 resource "aws_iam_policy" "s3_access_policy" {
-  tags        = var.common_tags
   name        = "ecsS3AccessPolicy"
   description = "Policy to allow ECS tasks to upload files to S3"
+  tags        = var.common_tags
+
   policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
@@ -140,9 +157,15 @@ resource "aws_iam_policy" "s3_access_policy" {
           "s3:PutObjectTagging",
           "s3:PutObjectVersionAcl",
           "s3:PutObjectVersionTagging"
-        ]
+        ],
         Resource = "arn:aws:s3:::${var.s3_bucket_name}/gatling-results/*"
       }
     ]
   })
+}
+
+resource "aws_cloudwatch_log_group" "ecs_loadtesting" {
+  name              = "/ecs/loadtesting"
+  retention_in_days = 7
+  tags              = var.common_tags
 }
