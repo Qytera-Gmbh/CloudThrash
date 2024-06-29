@@ -116,9 +116,7 @@ resource "aws_iam_role" "ecs_task_role" {
   ]
 }
 
-resource "aws_ecs_service" "service" {
-  tags            = var.common_tags
-  name            = "loadtesting-service"
+data "aws_ecs_task_execution" "loadtesting_task_execution" {
   cluster         = aws_ecs_cluster.ecs_cluster.id
   task_definition = aws_ecs_task_definition.task.arn
   desired_count   = var.slave_count
@@ -128,12 +126,6 @@ resource "aws_ecs_service" "service" {
     subnets          = [var.subnet_id]
     security_groups  = [var.security_group_id]
     assign_public_ip = true
-  }
-
-  depends_on = [random_id.force_redeploy]
-
-  lifecycle {
-    create_before_destroy = true
   }
 }
 
