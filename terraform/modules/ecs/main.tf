@@ -27,14 +27,13 @@ resource "aws_iam_role" "ecs_task_execution_role" {
   ]
 }
 
-locals {
-  current_timestamp = formatdate("YYYY-MM-DD-HH-mm", timestamp())
+resource "random_id" "force_redeploy" {
+  byte_length = 8
 }
 
-resource "null_resource" "force_redeploy" {
-  triggers = {
-    timestamp = local.current_timestamp
-  }
+locals {
+  current_timestamp = formatdate("YYYY-MM-DD-HH-mm", timestamp())
+  unique_timestamp  = "${local.current_timestamp}-${random_id.force_redeploy.hex}"
 }
 
 resource "aws_ecs_task_definition" "task" {
@@ -91,6 +90,8 @@ resource "aws_ecs_task_definition" "task" {
   lifecycle {
     create_before_destroy = true
   }
+
+  depends_on = [random_id.force_redeploy]
 }
 
 resource "aws_iam_role" "ecs_task_role" {
@@ -129,7 +130,7 @@ resource "aws_ecs_service" "service" {
     assign_public_ip = true
   }
 
-  depends_on = [null_resource.force_redeploy]
+  depends_on = [random_id.force_redeploy]
 
   lifecycle {
     create_before_destroy = true

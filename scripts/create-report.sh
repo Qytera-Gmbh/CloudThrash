@@ -18,6 +18,21 @@ LOCAL_DIR="./target/gatling/$current_timestamp"
 # Create the local directory if it doesn't exist
 mkdir -p $LOCAL_DIR
 
+# Function to count the number of log files in the S3 path
+count_log_files_in_s3() {
+  aws s3api list-objects-v2 --bucket $S3_BUCKET_NAME --prefix "gatling-results/${current_timestamp}/" --profile $AWS_PROFILE --query "length(Contents[?ends_with(Key, '.log')])" --output text
+}
+
+# Wait until the number of log files in S3 is equal to SLAVE_COUNT
+while true; do
+  log_file_count=$(count_log_files_in_s3)
+  if [ "$log_file_count" -ge "$SLAVE_COUNT" ]; then
+    break
+  fi
+  echo "Waiting for log files... ($log_file_count/$SLAVE_COUNT)"
+  sleep 10
+done
+
 # Download all .log files from the specified S3 path to the local directory
 aws s3 cp $S3_PATH $LOCAL_DIR --recursive --exclude "*" --include "*.log" --profile $AWS_PROFILE
 

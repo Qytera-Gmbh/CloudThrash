@@ -65,6 +65,8 @@ while [[ "$TASK_STATUS" != "STOPPED" ]]; do
   check_task_status
 done
 
+terraform destroy -target=module.ecs.aws_ecs_task_definition.task -auto-approve
+
 popd > /dev/null
 
 echo "### SECTION [5/5] Creating Report ###"

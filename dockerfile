@@ -10,7 +10,7 @@ COPY simulation/pom.xml /app
 RUN mvn dependency:go-offline
 
 COPY /simulation/src /app/src
-RUN mvn clean install -DskipTests
+RUN mvn install -DskipTests
 
 COPY docker/entrypoint.sh /app
 RUN dos2unix ./entrypoint.sh
