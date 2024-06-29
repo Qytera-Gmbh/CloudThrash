@@ -86,12 +86,6 @@ resource "aws_ecs_task_definition" "task" {
       ]
     }
   ])
-
-  lifecycle {
-    create_before_destroy = true
-  }
-
-  depends_on = [random_id.force_redeploy]
 }
 
 resource "aws_iam_role" "ecs_task_role" {
