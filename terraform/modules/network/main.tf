@@ -1,7 +1,10 @@
 resource "aws_vpc" "main" {
-  tags       = var.common_tags
-  cidr_block = "10.0.0.0/16"
+  cidr_block           = "10.0.0.0/16"
+  enable_dns_support   = true
+  enable_dns_hostnames = true
+  tags                 = var.common_tags
 }
+
 
 resource "aws_subnet" "main" {
   tags                    = var.common_tags
@@ -32,7 +35,7 @@ resource "aws_route_table_association" "main" {
 }
 
 resource "aws_security_group" "main" {
-  tags  = var.common_tags
+  tags   = var.common_tags
   vpc_id = aws_vpc.main.id
 
   ingress {
@@ -48,4 +51,15 @@ resource "aws_security_group" "main" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+}
+
+resource "aws_vpc_dhcp_options" "main" {
+  domain_name         = "amazonaws.com"
+  domain_name_servers = ["AmazonProvidedDNS"]
+  tags                = var.common_tags
+}
+
+resource "aws_vpc_dhcp_options_association" "main" {
+  dhcp_options_id = aws_vpc_dhcp_options.main.id
+  vpc_id          = aws_vpc.main.id
 }

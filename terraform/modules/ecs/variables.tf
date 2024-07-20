@@ -9,3 +9,4 @@ variable "s3_bucket_name" {}
 variable "common_tags" {}
 variable "subnet_id" {}
 variable "security_group_id" {}
+variable "vpc_id" {}

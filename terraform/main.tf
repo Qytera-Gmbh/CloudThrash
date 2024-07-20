@@ -16,6 +16,7 @@ module "ecs" {
   common_tags       = var.common_tags
   subnet_id         = module.network.subnet_id
   security_group_id = module.network.security_group_id
+  vpc_id            = module.network.vpc_id
 }
 
 module "s3" {

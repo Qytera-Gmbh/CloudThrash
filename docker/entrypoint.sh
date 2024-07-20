@@ -1,7 +1,15 @@
 #!/bin/bash
 
+# Ensure the /tmp/telegraf directory exists
+mkdir -p /tmp/telegraf
+
+# Start Telegraf with the config file
+telegraf --config /etc/telegraf/telegraf.conf &
+
+curl -v http://influxdb.loadtest:8086/health
+
 # Fetch ECS metadata
-ECS_METADATA=$(curl -s http://169.254.170.2/v2/metadata)
+ECS_METADATA=$(curl -s http://169.254.170.2/v2/metadata) # ip is internal AWS
 TASK_ID=$(echo $ECS_METADATA | jq -r '.TaskARN' | awk -F '/' '{print $NF}')
 echo "TASK_ID: $TASK_ID"
 
