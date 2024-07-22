@@ -8,7 +8,7 @@ RUN git clone https://github.com/influxdata/telegraf.git . && \
 FROM maven:3.8.5-openjdk-17-slim
 
 RUN apt-get update && \
-    apt-get install -y python3-pip jq dos2unix && \
+    apt-get install -y python3-pip jq dos2unix curl && \
     pip3 install awscli
 
 WORKDIR /app

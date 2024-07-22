@@ -6,6 +6,8 @@ import io.gatling.javaapi.http.*;
 import static io.gatling.javaapi.core.CoreDsl.*;
 import static io.gatling.javaapi.http.HttpDsl.*;
 
+import java.time.Duration;
+
 public class BasicSimulation extends Simulation {
 
         HttpProtocolBuilder httpProtocol = http.baseUrl("https://example.com")
@@ -14,7 +16,7 @@ public class BasicSimulation extends Simulation {
 
         ScenarioBuilder scn = scenario("BasicSimulation")
                         .forever()
-                        .on(exec(http("request_1").get("/")).pause(10)); // Pause for 10 seconds between requests
+                        .on(exec(http("request_1").get("/")).pause(Duration.ofMillis(250)));
 
         {
                 setUp(scn.injectOpen(atOnceUsers(5)).protocols(httpProtocol)).maxDuration(30);

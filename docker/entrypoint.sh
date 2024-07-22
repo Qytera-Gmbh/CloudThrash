@@ -1,12 +1,24 @@
 #!/bin/bash
 
-# Ensure the /tmp/telegraf directory exists
-mkdir -p /tmp/telegraf
+# Short function to check if the Graphite server is accessible
+check_graphite_server() {
+  local url="$1"
+  echo "Checking if Graphite server $url is accessible..."
+
+  if curl -s --head --request GET "$url" | grep "200 OK" > /dev/null; then
+    echo "Graphite server $url is accessible."
+  else
+    echo "Graphite server $url is not accessible. Exiting."
+    exit 1
+  fi
+}
+
+# Check if Graphite server is accessible
+check_graphite_server "http://graphite.loadtest:80"
 
 # Start Telegraf with the config file
+mkdir -p /var/log/telegraf
 telegraf --config /etc/telegraf/telegraf.conf &
-
-curl -v http://influxdb.loadtest:8086/health
 
 # Fetch ECS metadata
 ECS_METADATA=$(curl -s http://169.254.170.2/v2/metadata) # ip is internal AWS

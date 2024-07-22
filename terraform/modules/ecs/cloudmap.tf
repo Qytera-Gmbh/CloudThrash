@@ -4,8 +4,8 @@ resource "aws_service_discovery_private_dns_namespace" "loadtest" {
   description = "Private DNS namespace for ECS services"
 }
 
-resource "aws_service_discovery_service" "influxdb" {
-  name = "influxdb"
+resource "aws_service_discovery_service" "graphite" {
+  name = "graphite"
 
   dns_config {
     namespace_id = aws_service_discovery_private_dns_namespace.loadtest.id
