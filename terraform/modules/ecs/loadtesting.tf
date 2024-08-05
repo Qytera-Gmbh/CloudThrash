@@ -21,7 +21,7 @@ resource "aws_ecs_task_definition" "task" {
   container_definitions = jsonencode([
     {
       "name" : "loadtesting-container",
-      "image" : "${var.aws_account_id}.dkr.ecr.${var.aws_region}.amazonaws.com/${var.ecr_repository}:latest",
+      "image" : "${var.aws_account_id}.dkr.ecr.${var.aws_region}.amazonaws.com/${var.ecr_repository}:gatling-latest",
       "essential" : true,
       "portMappings" : [
         {
@@ -57,6 +57,8 @@ resource "aws_ecs_task_definition" "task" {
       ]
     }
   ])
+
+  depends_on = [aws_ecs_service.graphite_service, aws_service_discovery_private_dns_namespace.loadtest]
 }
 
 data "aws_ecs_task_execution" "loadtesting_task_execution" {
@@ -70,6 +72,8 @@ data "aws_ecs_task_execution" "loadtesting_task_execution" {
     security_groups  = [var.security_group_id]
     assign_public_ip = true
   }
+
+  depends_on = [aws_ecs_service.graphite_service, aws_service_discovery_private_dns_namespace.loadtest]
 }
 
 resource "aws_cloudwatch_log_group" "ecs_loadtesting" {

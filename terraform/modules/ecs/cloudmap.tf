@@ -5,6 +5,8 @@ resource "aws_service_discovery_private_dns_namespace" "loadtest" {
 }
 
 resource "aws_service_discovery_service" "graphite" {
+  depends_on = [aws_service_discovery_private_dns_namespace.loadtest]
+
   name = "graphite"
 
   dns_config {

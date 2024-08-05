@@ -1,20 +1,14 @@
 #!/bin/bash
 
-# Short function to check if the Graphite server is accessible
-check_graphite_server() {
-  local url="$1"
-  echo "Checking if Graphite server $url is accessible..."
+service nscd start &&
+while ! nc -z graphite.loadtest 2003; do
+  echo "Waiting for graphite.loadtest:2003 to be available..."
+  service nscd restart
+  sleep 1
+done
 
-  if curl -s --head --request GET "$url" | grep "200 OK" > /dev/null; then
-    echo "Graphite server $url is accessible."
-  else
-    echo "Graphite server $url is not accessible. Exiting."
-    exit 1
-  fi
-}
-
-# Check if Graphite server is accessible
-check_graphite_server "http://graphite.loadtest:80"
+service nscd stop
+echo "graphite.loadtest:2003 is available, starting load test..."
 
 # Start Telegraf with the config file
 mkdir -p /var/log/telegraf

@@ -1,36 +1,36 @@
-resource "aws_ecs_task_definition" "graphite_task" {
-  family                   = "graphite-task"
+resource "aws_ecs_task_definition" "grafana_task" {
+  family                   = "grafana-task"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   cpu                      = var.slave_cpu
   memory                   = var.slave_memory
 
   container_definitions = jsonencode([{
-    name      = "graphite"
-    image     = "${var.aws_account_id}.dkr.ecr.${var.aws_region}.amazonaws.com/${var.ecr_repository}:graphite-latest"
+    name      = "grafana"
+    image     = "${var.aws_account_id}.dkr.ecr.${var.aws_region}.amazonaws.com/${var.ecr_repository}:grafana-latest"
     essential = true
 
     portMappings = [{
-      containerPort = 80
-      hostPort      = 80
+      containerPort = 3000
+      hostPort      = 3000
       protocol      = "tcp"
     }]
 
     environment = [
       {
-        name  = "GRAPHITE_STORAGE_DIR"
-        value = "/opt/graphite/storage"
+        name  = "GF_SECURITY_ADMIN_PASSWORD"
+        value = "admin"
       },
       {
-        name  = "GRAPHITE_TIME_ZONE"
-        value = "UTC"
+        name  = "GF_SECURITY_ADMIN_USER"
+        value = "admin"
       }
     ]
 
     logConfiguration = {
       logDriver = "awslogs"
       options = {
-        awslogs-group         = "/ecs/graphite"
+        awslogs-group         = "/ecs/grafana"
         awslogs-region        = var.aws_region
         awslogs-stream-prefix = "ecs"
       }
@@ -41,12 +41,12 @@ resource "aws_ecs_task_definition" "graphite_task" {
   task_role_arn      = aws_iam_role.ecs_task_role.arn
 }
 
-resource "aws_ecs_service" "graphite_service" {
-  depends_on = [aws_service_discovery_service.graphite]
+resource "aws_ecs_service" "grafana_service" {
+  depends_on = [aws_ecs_service.graphite_service]
 
-  name            = "graphite-service"
+  name            = "grafana-service"
   cluster         = aws_ecs_cluster.ecs_cluster.id
-  task_definition = aws_ecs_task_definition.graphite_task.arn
+  task_definition = aws_ecs_task_definition.grafana_task.arn
   launch_type     = "FARGATE"
   desired_count   = 1
 
@@ -56,14 +56,10 @@ resource "aws_ecs_service" "graphite_service" {
     assign_public_ip = true
   }
 
-  service_registries {
-    registry_arn = aws_service_discovery_service.graphite.arn
-  }
-
   tags = var.common_tags
 }
 
-resource "aws_cloudwatch_log_group" "ecs_log_group" {
-  name              = "/ecs/graphite"
+resource "aws_cloudwatch_log_group" "grafana_log_group" {
+  name              = "/ecs/grafana"
   retention_in_days = 7
 }
