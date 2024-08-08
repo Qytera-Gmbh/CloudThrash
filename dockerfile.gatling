@@ -6,7 +6,7 @@ WORKDIR /go/src/github.com/influxdata/telegraf
 RUN git clone https://github.com/influxdata/telegraf.git . && make
 
 # Main application image
-FROM maven:3.8.5-openjdk-17-slim
+FROM maven:3.8-openjdk-18-slim
 
 RUN apt-get update && \
     apt-get install -y python3-pip jq dos2unix curl netcat nscd && \
