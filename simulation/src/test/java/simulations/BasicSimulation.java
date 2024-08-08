@@ -24,6 +24,8 @@ public class BasicSimulation extends Simulation {
                                 rampUsers(20).during(Duration.ofSeconds(30)),
                                 nothingFor(Duration.ofMinutes(2)),
                                 rampUsers(10).during(Duration.ofSeconds(30)))).protocols(httpProtocol)
-                                .maxDuration(Duration.ofMinutes(5));
+                                .maxDuration(Duration.ofMinutes(5)).assertions(
+                                                global().responseTime().percentile2().lt(100),
+                                                global().successfulRequests().percent().gt(95.0));
         }
 }
