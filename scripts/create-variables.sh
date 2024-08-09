@@ -3,6 +3,7 @@
 pushd $(dirname $0) > /dev/null
 
 . ./variables.sh
+. ./get-grafana-credentials.sh
 
 cat > ../terraform/terraform.tfvars <<EOL
 aws_profile = "$AWS_PROFILE"
@@ -14,6 +15,10 @@ aws_account_id = "$AWS_ACCOUNT_ID"
 slave_memory = $SLAVE_MEMORY
 slave_cpu = $SLAVE_CPU
 slave_count = $SLAVE_COUNT
+
+grafana_admin_user = "$grafana_username"
+grafana_admin_password = "$grafana_password"
+
 EOL
 
 popd > /dev/null

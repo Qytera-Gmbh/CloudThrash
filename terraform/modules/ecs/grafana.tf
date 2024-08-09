@@ -19,11 +19,11 @@ resource "aws_ecs_task_definition" "grafana_task" {
     environment = [
       {
         name  = "GF_SECURITY_ADMIN_PASSWORD"
-        value = "admin"
+        value = "${var.grafana_admin_password}"
       },
       {
         name  = "GF_SECURITY_ADMIN_USER"
-        value = "admin"
+        value = "${var.grafana_admin_user}"
       }
     ]
 

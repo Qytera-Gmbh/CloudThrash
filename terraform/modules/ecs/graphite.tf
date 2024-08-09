@@ -1,3 +1,31 @@
+# Define the security group with required rules
+resource "aws_security_group" "graphite_sg" {
+  name        = "graphite_sg"
+  description = "Security group for Graphite ECS service"
+  vpc_id      = var.vpc_id
+
+  # Ingress rules for external access
+  ingress {
+    from_port       = 0
+    to_port         = 0
+    protocol        = "-1"
+    security_groups = [var.security_group_id]
+  }
+
+  # Egress rules
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "graphite_sg"
+  }
+}
+
+# Define the ECS Task Definition
 resource "aws_ecs_task_definition" "graphite_task" {
   family                   = "graphite-task"
   network_mode             = "awsvpc"
@@ -9,12 +37,6 @@ resource "aws_ecs_task_definition" "graphite_task" {
     name      = "graphite"
     image     = "${var.aws_account_id}.dkr.ecr.${var.aws_region}.amazonaws.com/${var.ecr_repository}:graphite-latest"
     essential = true
-
-    portMappings = [{
-      containerPort = 80
-      hostPort      = 80
-      protocol      = "tcp"
-    }]
 
     environment = [
       {
@@ -52,7 +74,7 @@ resource "aws_ecs_service" "graphite_service" {
 
   network_configuration {
     subnets          = [var.subnet_id]
-    security_groups  = [var.security_group_id]
+    security_groups  = [aws_security_group.graphite_sg.id]
     assign_public_ip = true
   }
 

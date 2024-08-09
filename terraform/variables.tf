@@ -35,3 +35,11 @@ variable "common_tags" {
     Project = "LoadTesting"
   }
 }
+
+variable "grafana_admin_user" {
+  description = "Grafana admin user"
+}
+
+variable "grafana_admin_password" {
+  description = "Grafana admin password"
+}
