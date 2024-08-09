@@ -1,3 +1,15 @@
+resource "aws_secretsmanager_secret" "grafana_admin_credentials" {
+  name = "grafana-admin-credentials"
+}
+
+resource "aws_secretsmanager_secret_version" "grafana_admin_credentials_version" {
+  secret_id = aws_secretsmanager_secret.grafana_admin_credentials.id
+  secret_string = jsonencode({
+    "grafana_username" = var.grafana_admin_user
+    "grafana_password" = var.grafana_admin_password
+  })
+}
+
 resource "aws_ecs_task_definition" "grafana_task" {
   family                   = "grafana-task"
   network_mode             = "awsvpc"
