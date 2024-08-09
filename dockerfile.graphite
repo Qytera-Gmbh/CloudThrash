@@ -1,4 +1,4 @@
 FROM graphiteapp/graphite-statsd:latest
 
 # Copy the storage-schemas.conf into the image
-COPY docker/storage-schemas.conf /opt/graphite/conf/storage-schemas.conf
+COPY docker/graphite/storage-schemas.conf /opt/graphite/conf/storage-schemas.conf

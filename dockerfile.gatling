@@ -22,10 +22,10 @@ RUN mvn dependency:go-offline
 COPY /simulation/src /app/src
 RUN mvn install
 
-COPY docker/entrypoint-gatling.sh /app
+COPY docker/gatling/entrypoint-gatling.sh /app
 RUN dos2unix ./entrypoint-gatling.sh && chmod +x ./entrypoint-gatling.sh
 
-COPY docker/telegraf.conf /etc/telegraf/telegraf.conf
+COPY docker/gatling/telegraf.conf /etc/telegraf/telegraf.conf
 RUN dos2unix /etc/telegraf/telegraf.conf
 
 ENTRYPOINT ["./entrypoint-gatling.sh"]

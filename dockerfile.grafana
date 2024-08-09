@@ -4,7 +4,7 @@ FROM grafana/grafana:latest
 USER root
 
 RUN apk update && apk add netcat-openbsd dos2unix
-COPY docker/entrypoint-grafana.sh /usr/bin/entrypoint-grafana.sh
+COPY docker/grafana/entrypoint-grafana.sh /usr/bin/entrypoint-grafana.sh
 RUN chmod +x /usr/bin/entrypoint-grafana.sh && dos2unix /usr/bin/entrypoint-grafana.sh
 
 USER grafana
@@ -13,14 +13,14 @@ USER grafana
 RUN mkdir -p /etc/grafana/provisioning/dashboards /var/lib/grafana/dashboards
 
 # Copy datasource configuration
-COPY docker/grafana-datasource-graphite.yaml /etc/grafana/provisioning/datasources/graphite_datasource.yaml
+COPY docker/grafana/grafana-datasource-graphite.yaml /etc/grafana/provisioning/datasources/graphite_datasource.yaml
 
 # Copy dashboard provisioning configuration
-COPY docker/dashboard.yaml /etc/grafana/provisioning/dashboards/dashboard.yaml
+COPY docker/grafana/dashboard.yaml /etc/grafana/provisioning/dashboards/dashboard.yaml
 
 # Copy dashboards
-COPY docker/grafana-dashboard-telegraf.json /var/lib/grafana/dashboards/telegraf_dashboard.json
-COPY docker/grafana-dashboard-gatling.json /var/lib/grafana/dashboards/gatling_dashboard.json
+COPY docker/grafana/grafana-dashboard-telegraf.json /var/lib/grafana/dashboards/telegraf_dashboard.json
+COPY docker/grafana/grafana-dashboard-gatling.json /var/lib/grafana/dashboards/gatling_dashboard.json
 
 # Set environment variables to enable provisioning
 ENV GF_DASHBOARDS_JSON_ENABLED="true"
