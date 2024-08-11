@@ -1,5 +1,7 @@
 resource "aws_secretsmanager_secret" "grafana_admin_credentials" {
-  name = "grafana-admin-credentials"
+  name                    = "grafana-admin-credentials"
+  description             = "Grafana admin credentials"
+  recovery_window_in_days = 0
 }
 
 resource "aws_secretsmanager_secret_version" "grafana_admin_credentials_version" {

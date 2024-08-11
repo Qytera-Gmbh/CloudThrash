@@ -18,6 +18,8 @@ slave_count = $SLAVE_COUNT
 
 grafana_admin_user = "$grafana_username"
 grafana_admin_password = "$grafana_password"
+user = "$(whoami)"
+app_name = "$APP_NAME"
 
 EOL
 

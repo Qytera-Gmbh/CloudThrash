@@ -53,7 +53,15 @@ resource "aws_ecs_task_definition" "task" {
         {
           "name" : "RUN_TIMESTAMP",
           "value" : local.current_timestamp
-        }
+        },
+        {
+          "name" : "TELEGRAF_PREFIX",
+          "value" : "telegraf.${var.user}.${var.app_name}"
+        },
+        {
+          "name" : "GATLING_PREFIX",
+          "value" : "gatling.${var.user}.${var.app_name}"
+        },
       ]
     }
   ])

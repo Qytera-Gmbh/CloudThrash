@@ -19,6 +19,8 @@ module "ecs" {
   vpc_id                 = module.network.vpc_id
   grafana_admin_user     = var.grafana_admin_user
   grafana_admin_password = var.grafana_admin_password
+  user                   = var.user
+  app_name               = var.app_name
 }
 
 module "s3" {

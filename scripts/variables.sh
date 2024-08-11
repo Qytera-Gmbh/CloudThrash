@@ -10,4 +10,6 @@ SLAVE_MEMORY=4096
 SLAVE_CPU=2048
 SLAVE_COUNT=1
 
+APP_NAME="BasicLoadSimulation"
+
 export AWS_PAGER=""

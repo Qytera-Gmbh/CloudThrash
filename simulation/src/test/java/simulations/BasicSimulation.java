@@ -14,7 +14,7 @@ public class BasicSimulation extends Simulation {
                         .acceptHeader("application/json")
                         .disableCaching();
 
-        ScenarioBuilder scn = scenario("BasicSimulation")
+        ScenarioBuilder scn = scenario("Scenario 1")
                         .forever()
                         .on(exec(http("request_1").get("/")).pause(Duration.ofMillis(250)));
 

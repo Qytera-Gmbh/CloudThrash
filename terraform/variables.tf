@@ -43,3 +43,12 @@ variable "grafana_admin_user" {
 variable "grafana_admin_password" {
   description = "Grafana admin password"
 }
+
+variable "user" {
+  description = "User"
+}
+
+variable "app_name" {
+  description = "App name"
+  default     = "BasicSimulation"
+}

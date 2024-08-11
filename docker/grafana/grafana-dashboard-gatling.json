@@ -1,827 +1,877 @@
 {
-  "annotations": {
-    "list": [
-      {
-        "builtIn": 1,
-        "datasource": {
-          "type": "grafana",
-          "uid": "-- Grafana --"
-        },
-        "enable": true,
-        "hide": true,
-        "iconColor": "rgba(0, 211, 255, 1)",
-        "name": "Annotations & Alerts",
-        "type": "dashboard"
-      }
-    ]
-  },
-  "editable": true,
-  "fiscalYearStartMonth": 0,
-  "graphTooltip": 0,
-  "links": [],
-  "panels": [
-    {
-      "datasource": {
-        "type": "graphite",
-        "uid": "P6575522ED8660310"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 5,
-        "x": 0,
-        "y": 0
-      },
-      "id": 3,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "sum"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "11.1.0",
-      "targets": [
-        {
-          "datasource": {
-            "type": "graphite",
-            "uid": "P6575522ED8660310"
-          },
-          "refId": "A",
-          "target": "gatling.*.allRequests.all.count"
-        }
-      ],
-      "title": "Total Request Count",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "graphite",
-        "uid": "P6575522ED8660310"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "percentage",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 5.0001
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 6,
-        "x": 5,
-        "y": 0
-      },
-      "id": 10,
-      "options": {
-        "minVizHeight": 75,
-        "minVizWidth": 75,
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "sum"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true,
-        "sizing": "auto"
-      },
-      "pluginVersion": "11.1.0",
-      "targets": [
-        {
-          "datasource": {
-            "type": "graphite",
-            "uid": "P6575522ED8660310"
-          },
-          "refCount": 0,
-          "refId": "A",
-          "target": "gatling.*.allRequests.ko.count"
-        }
-      ],
-      "title": "Total Errors",
-      "type": "gauge"
-    },
-    {
-      "datasource": {
-        "type": "graphite",
-        "uid": "P6575522ED8660310"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 6,
-        "x": 11,
-        "y": 0
-      },
-      "id": 11,
-      "options": {
-        "minVizHeight": 75,
-        "minVizWidth": 75,
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "sum"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true,
-        "sizing": "auto"
-      },
-      "pluginVersion": "11.1.0",
-      "targets": [
-        {
-          "datasource": {
-            "type": "graphite",
-            "uid": "P6575522ED8660310"
-          },
-          "refCount": 0,
-          "refId": "A",
-          "target": "gatling.*.allRequests.ok.count"
-        }
-      ],
-      "title": "Total OK Requests",
-      "type": "gauge"
-    },
-    {
-      "datasource": {
-        "type": "graphite",
-        "uid": "P6575522ED8660310"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "fieldMinMax": false,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 500
-              }
-            ]
-          },
-          "unit": "ms"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 17,
-        "x": 0,
-        "y": 8
-      },
-      "id": 13,
-      "options": {
-        "minVizHeight": 75,
-        "minVizWidth": 75,
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "mean"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showThresholdLabels": true,
-        "showThresholdMarkers": false,
-        "sizing": "auto"
-      },
-      "pluginVersion": "11.1.0",
-      "targets": [
-        {
-          "datasource": {
-            "type": "graphite",
-            "uid": "P6575522ED8660310"
-          },
-          "refCount": 0,
-          "refId": "A",
-          "target": "gatling.*.allRequests.all.min",
-          "textEditor": true
-        },
-        {
-          "datasource": {
-            "type": "graphite",
-            "uid": "P6575522ED8660310"
-          },
-          "hide": false,
-          "refCount": 0,
-          "refId": "B",
-          "target": "gatling.*.allRequests.all.mean",
-          "textEditor": true
-        },
-        {
-          "datasource": {
-            "type": "graphite",
-            "uid": "P6575522ED8660310"
-          },
-          "hide": false,
-          "refCount": 0,
-          "refId": "C",
-          "target": "gatling.*.allRequests.all.max",
-          "textEditor": true
-        }
-      ],
-      "title": "Average Request Times",
-      "type": "gauge"
-    },
-    {
-      "datasource": {
-        "type": "graphite",
-        "uid": "P6575522ED8660310"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "smooth",
-            "lineStyle": {
-              "fill": "solid"
-            },
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
+    "annotations": {
+        "list": [
+            {
+                "builtIn": 1,
+                "datasource": {
+                    "type": "grafana",
+                    "uid": "-- Grafana --"
+                },
+                "enable": true,
+                "hide": true,
+                "iconColor": "rgba(0, 211, 255, 1)",
+                "name": "Annotations & Alerts",
+                "type": "dashboard"
             }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 17,
-        "x": 0,
-        "y": 17
-      },
-      "id": 2,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "11.1.0",
-      "targets": [
-        {
-          "datasource": {
-            "type": "graphite",
-            "uid": "P6575522ED8660310"
-          },
-          "refId": "A",
-          "target": "gatling.*.users.allUsers.*"
-        }
-      ],
-      "title": "Users",
-      "type": "timeseries"
+        ]
     },
-    {
-      "datasource": {
-        "type": "graphite",
-        "uid": "P6575522ED8660310"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "dtdurationms"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 17,
-        "x": 0,
-        "y": 26
-      },
-      "id": 1,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "links": [],
+    "panels": [
         {
-          "datasource": {
-            "type": "graphite",
-            "uid": "P6575522ED8660310"
-          },
-          "refId": "A",
-          "target": "gatling.*.allRequests.*.count"
+            "datasource": {
+                "type": "graphite",
+                "uid": "P6575522ED8660310"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 5,
+                "x": 0,
+                "y": 0
+            },
+            "id": 3,
+            "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                    "calcs": ["sum"],
+                    "fields": "",
+                    "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
+            },
+            "pluginVersion": "11.1.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "graphite",
+                        "uid": "P6575522ED8660310"
+                    },
+                    "refId": "A",
+                    "target": "gatling.$User.$Simulation.*.allRequests.all.count",
+                    "textEditor": true
+                }
+            ],
+            "title": "Total Request Count",
+            "type": "stat"
+        },
+        {
+            "datasource": {
+                "type": "graphite",
+                "uid": "P6575522ED8660310"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "percentage",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 5.0001
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 6,
+                "x": 5,
+                "y": 0
+            },
+            "id": 10,
+            "options": {
+                "minVizHeight": 75,
+                "minVizWidth": 75,
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": ["sum"],
+                    "fields": "",
+                    "values": false
+                },
+                "showThresholdLabels": false,
+                "showThresholdMarkers": true,
+                "sizing": "auto"
+            },
+            "pluginVersion": "11.1.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "graphite",
+                        "uid": "P6575522ED8660310"
+                    },
+                    "refCount": 0,
+                    "refId": "A",
+                    "target": "gatling.$User.$Simulation.*.allRequests.ko.count",
+                    "textEditor": true
+                }
+            ],
+            "title": "Total Errors",
+            "type": "gauge"
+        },
+        {
+            "datasource": {
+                "type": "graphite",
+                "uid": "P6575522ED8660310"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 6,
+                "x": 11,
+                "y": 0
+            },
+            "id": 11,
+            "options": {
+                "minVizHeight": 75,
+                "minVizWidth": 75,
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": ["sum"],
+                    "fields": "",
+                    "values": false
+                },
+                "showThresholdLabels": false,
+                "showThresholdMarkers": true,
+                "sizing": "auto"
+            },
+            "pluginVersion": "11.1.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "graphite",
+                        "uid": "P6575522ED8660310"
+                    },
+                    "refCount": 0,
+                    "refId": "A",
+                    "target": "gatling.$User.$Simulation.*.allRequests.ok.count",
+                    "textEditor": true
+                }
+            ],
+            "title": "Total OK Requests",
+            "type": "gauge"
+        },
+        {
+            "datasource": {
+                "type": "graphite",
+                "uid": "P6575522ED8660310"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "fieldMinMax": false,
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 500
+                            }
+                        ]
+                    },
+                    "unit": "ms"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 9,
+                "w": 17,
+                "x": 0,
+                "y": 8
+            },
+            "id": 13,
+            "options": {
+                "minVizHeight": 75,
+                "minVizWidth": 75,
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": ["mean"],
+                    "fields": "",
+                    "values": false
+                },
+                "showThresholdLabels": true,
+                "showThresholdMarkers": false,
+                "sizing": "auto"
+            },
+            "pluginVersion": "11.1.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "graphite",
+                        "uid": "P6575522ED8660310"
+                    },
+                    "refCount": 0,
+                    "refId": "A",
+                    "target": "gatling.$User.$Simulation.*.allRequests.all.min",
+                    "textEditor": true
+                },
+                {
+                    "datasource": {
+                        "type": "graphite",
+                        "uid": "P6575522ED8660310"
+                    },
+                    "hide": false,
+                    "refCount": 0,
+                    "refId": "B",
+                    "target": "gatling.$User.$Simulation.*.allRequests.all.mean",
+                    "textEditor": true
+                },
+                {
+                    "datasource": {
+                        "type": "graphite",
+                        "uid": "P6575522ED8660310"
+                    },
+                    "hide": false,
+                    "refCount": 0,
+                    "refId": "C",
+                    "target": "gatling.$User.$Simulation.*.allRequests.all.max",
+                    "textEditor": true
+                }
+            ],
+            "title": "Average Request Times",
+            "type": "gauge"
+        },
+        {
+            "datasource": {
+                "type": "graphite",
+                "uid": "P6575522ED8660310"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "drawStyle": "line",
+                        "fillOpacity": 0,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "insertNulls": false,
+                        "lineInterpolation": "smooth",
+                        "lineStyle": {
+                            "fill": "solid"
+                        },
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 9,
+                "w": 17,
+                "x": 0,
+                "y": 17
+            },
+            "id": 2,
+            "options": {
+                "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                },
+                "tooltip": {
+                    "mode": "single",
+                    "sort": "none"
+                }
+            },
+            "pluginVersion": "11.1.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "graphite",
+                        "uid": "P6575522ED8660310"
+                    },
+                    "refId": "A",
+                    "target": "gatling.$User.$Simulation.*.users.allUsers.*",
+                    "textEditor": true
+                }
+            ],
+            "title": "Users",
+            "type": "timeseries"
+        },
+        {
+            "datasource": {
+                "type": "graphite",
+                "uid": "P6575522ED8660310"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "drawStyle": "line",
+                        "fillOpacity": 0,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "insertNulls": false,
+                        "lineInterpolation": "linear",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "dtdurationms"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 17,
+                "x": 0,
+                "y": 26
+            },
+            "id": 1,
+            "options": {
+                "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                },
+                "tooltip": {
+                    "mode": "single",
+                    "sort": "none"
+                }
+            },
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "graphite",
+                        "uid": "P6575522ED8660310"
+                    },
+                    "refId": "A",
+                    "target": "gatling.$User.$Simulation.*.allRequests.*.count",
+                    "textEditor": true
+                }
+            ],
+            "title": "Requests Over Time",
+            "type": "timeseries"
+        },
+        {
+            "datasource": {
+                "type": "graphite",
+                "uid": "P6575522ED8660310"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "drawStyle": "line",
+                        "fillOpacity": 0,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "insertNulls": false,
+                        "lineInterpolation": "linear",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "ms"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 17,
+                "x": 0,
+                "y": 34
+            },
+            "id": 7,
+            "options": {
+                "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                },
+                "tooltip": {
+                    "mode": "single",
+                    "sort": "none"
+                }
+            },
+            "pluginVersion": "11.1.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "graphite",
+                        "uid": "P6575522ED8660310"
+                    },
+                    "refCount": 0,
+                    "refId": "A",
+                    "target": "gatling.$User.$Simulation.*.allRequests.all.mean",
+                    "textEditor": true
+                },
+                {
+                    "datasource": {
+                        "type": "graphite",
+                        "uid": "P6575522ED8660310"
+                    },
+                    "hide": false,
+                    "refCount": 0,
+                    "refId": "B",
+                    "target": "gatling.$User.$Simulation.*.allRequests.all.max",
+                    "textEditor": true
+                },
+                {
+                    "datasource": {
+                        "type": "graphite",
+                        "uid": "P6575522ED8660310"
+                    },
+                    "hide": false,
+                    "refCount": 0,
+                    "refId": "C",
+                    "target": "gatling.$User.$Simulation.*.allRequests.all.min",
+                    "textEditor": true
+                }
+            ],
+            "title": "Response Times",
+            "type": "timeseries"
+        },
+        {
+            "datasource": {
+                "type": "graphite",
+                "uid": "P6575522ED8660310"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "drawStyle": "line",
+                        "fillOpacity": 0,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "insertNulls": false,
+                        "lineInterpolation": "linear",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "dtdurationms"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 17,
+                "x": 0,
+                "y": 42
+            },
+            "id": 8,
+            "options": {
+                "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                },
+                "tooltip": {
+                    "mode": "single",
+                    "sort": "none"
+                }
+            },
+            "pluginVersion": "11.1.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "graphite",
+                        "uid": "P6575522ED8660310"
+                    },
+                    "refCount": 0,
+                    "refId": "A",
+                    "target": "gatling.$User.$Simulation.*.allRequests.all.percentiles99",
+                    "textEditor": true
+                },
+                {
+                    "datasource": {
+                        "type": "graphite",
+                        "uid": "P6575522ED8660310"
+                    },
+                    "hide": false,
+                    "refCount": 0,
+                    "refId": "B",
+                    "target": "gatling.$User.$Simulation.*.allRequests.all.percentiles95",
+                    "textEditor": true
+                },
+                {
+                    "datasource": {
+                        "type": "graphite",
+                        "uid": "P6575522ED8660310"
+                    },
+                    "hide": false,
+                    "refCount": 0,
+                    "refId": "C",
+                    "target": "gatling.$User.$Simulation.*.allRequests.all.percentiles75",
+                    "textEditor": true
+                }
+            ],
+            "title": "Response Times Percentiles",
+            "type": "timeseries"
+        },
+        {
+            "datasource": {
+                "type": "graphite",
+                "uid": "P6575522ED8660310"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "fillOpacity": 80,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "lineWidth": 1,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        }
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 17,
+                "x": 0,
+                "y": 50
+            },
+            "id": 9,
+            "options": {
+                "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                }
+            },
+            "pluginVersion": "11.1.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "graphite",
+                        "uid": "P6575522ED8660310"
+                    },
+                    "refCount": 0,
+                    "refId": "A",
+                    "target": "gatling.$User.$Simulation.*.allRequests.all.mean",
+                    "textEditor": true
+                },
+                {
+                    "datasource": {
+                        "type": "graphite",
+                        "uid": "P6575522ED8660310"
+                    },
+                    "hide": false,
+                    "refCount": 0,
+                    "refId": "B",
+                    "target": "gatling.$User.$Simulation.*.allRequests.all.max",
+                    "textEditor": true
+                },
+                {
+                    "datasource": {
+                        "type": "graphite",
+                        "uid": "P6575522ED8660310"
+                    },
+                    "hide": false,
+                    "refCount": 0,
+                    "refId": "C",
+                    "target": "gatling.$User.$Simulation.*.allRequests.all.min",
+                    "textEditor": true
+                }
+            ],
+            "title": "Response Times",
+            "type": "histogram"
         }
-      ],
-      "title": "Requests Over Time",
-      "type": "timeseries"
+    ],
+    "refresh": "auto",
+    "schemaVersion": 39,
+    "tags": [],
+    "templating": {
+        "list": [
+            {
+                "current": {
+                    "selected": true,
+                    "text": "All",
+                    "value": "$__all"
+                },
+                "definition": "gatling.*",
+                "hide": 0,
+                "includeAll": true,
+                "multi": false,
+                "name": "User",
+                "options": [],
+                "query": {
+                    "queryType": "Default",
+                    "refId": "A",
+                    "target": "gatling.*"
+                },
+                "refresh": 1,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 0,
+                "type": "query"
+            },
+            {
+                "current": {
+                    "selected": true,
+                    "text": "All",
+                    "value": "$__all"
+                },
+                "definition": "gatling.$User.*",
+                "hide": 0,
+                "includeAll": true,
+                "multi": false,
+                "name": "Simulation",
+                "options": [],
+                "query": {
+                    "queryType": "Default",
+                    "refId": "A",
+                    "target": "gatling.$User.*"
+                },
+                "refresh": 1,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 0,
+                "type": "query"
+            }
+        ]
     },
-    {
-      "datasource": {
-        "type": "graphite",
-        "uid": "P6575522ED8660310"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "ms"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 17,
-        "x": 0,
-        "y": 34
-      },
-      "id": 7,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "11.1.0",
-      "targets": [
-        {
-          "datasource": {
-            "type": "graphite",
-            "uid": "P6575522ED8660310"
-          },
-          "refCount": 0,
-          "refId": "A",
-          "target": "gatling.*.allRequests.all.mean"
-        },
-        {
-          "datasource": {
-            "type": "graphite",
-            "uid": "P6575522ED8660310"
-          },
-          "hide": false,
-          "refCount": 0,
-          "refId": "B",
-          "target": "gatling.*.allRequests.all.max",
-          "textEditor": false
-        },
-        {
-          "datasource": {
-            "type": "graphite",
-            "uid": "P6575522ED8660310"
-          },
-          "hide": false,
-          "refCount": 0,
-          "refId": "C",
-          "target": "gatling.*.allRequests.all.min",
-          "textEditor": false
-        }
-      ],
-      "title": "Response Times",
-      "type": "timeseries"
+    "time": {
+        "from": "now-15m",
+        "to": "now"
     },
-    {
-      "datasource": {
-        "type": "graphite",
-        "uid": "P6575522ED8660310"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "dtdurationms"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 17,
-        "x": 0,
-        "y": 42
-      },
-      "id": 8,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "11.1.0",
-      "targets": [
-        {
-          "datasource": {
-            "type": "graphite",
-            "uid": "P6575522ED8660310"
-          },
-          "refCount": 0,
-          "refId": "A",
-          "target": "gatling.*.allRequests.all.percentiles99"
-        },
-        {
-          "datasource": {
-            "type": "graphite",
-            "uid": "P6575522ED8660310"
-          },
-          "hide": false,
-          "refCount": 0,
-          "refId": "B",
-          "target": "gatling.*.allRequests.all.percentiles95",
-          "textEditor": false
-        },
-        {
-          "datasource": {
-            "type": "graphite",
-            "uid": "P6575522ED8660310"
-          },
-          "hide": false,
-          "refCount": 0,
-          "refId": "C",
-          "target": "gatling.*.allRequests.all.percentiles75",
-          "textEditor": false
-        }
-      ],
-      "title": "Response Times Percentiles",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "graphite",
-        "uid": "P6575522ED8660310"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "fillOpacity": 80,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineWidth": 1,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 17,
-        "x": 0,
-        "y": 50
-      },
-      "id": 9,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        }
-      },
-      "pluginVersion": "11.1.0",
-      "targets": [
-        {
-          "datasource": {
-            "type": "graphite",
-            "uid": "P6575522ED8660310"
-          },
-          "refCount": 0,
-          "refId": "A",
-          "target": "gatling.*.allRequests.all.mean"
-        },
-        {
-          "datasource": {
-            "type": "graphite",
-            "uid": "P6575522ED8660310"
-          },
-          "hide": false,
-          "refCount": 0,
-          "refId": "B",
-          "target": "gatling.*.allRequests.all.max",
-          "textEditor": false
-        },
-        {
-          "datasource": {
-            "type": "graphite",
-            "uid": "P6575522ED8660310"
-          },
-          "hide": false,
-          "refCount": 0,
-          "refId": "C",
-          "target": "gatling.*.allRequests.all.min",
-          "textEditor": false
-        }
-      ],
-      "title": "Response Times",
-      "type": "histogram"
-    }
-  ],
-  "refresh": "",
-  "schemaVersion": 39,
-  "tags": [],
-  "templating": {
-    "list": []
-  },
-  "time": {
-    "from": "now-15m",
-    "to": "now"
-  },
-  "timepicker": {},
-  "timezone": "browser",
-  "title": "Gatling Metrics",
-  "uid": "ddsll49neb3eod",
-  "version": 1,
-  "weekStart": ""
+    "timepicker": {},
+    "timezone": "browser",
+    "title": "Gatling Metrics",
+    "uid": "ddsll49neb3eod",
+    "version": 1,
+    "weekStart": ""
 }

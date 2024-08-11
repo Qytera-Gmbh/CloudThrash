@@ -60,7 +60,7 @@ echo "All tasks are ready. Proceeding with the main task."
 # Execute the main task
 echo "Executing main task..."
 rm -rf ./target || true
-mvn gatling:test -Dgatling.noReports=true
+mvn gatling:test -Dgatling.noReports=true -Dgatling.data.graphite.rootPathPrefix=${GATLING_PREFIX}
 
 # delete all the ready files again
 aws s3 rm s3://$S3_BUCKET_NAME/gatling-results/$RUN_TIMESTAMP/ready/ --recursive

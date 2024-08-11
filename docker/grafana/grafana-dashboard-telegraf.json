@@ -11,6 +11,11 @@
                 "hide": true,
                 "iconColor": "rgba(0, 211, 255, 1)",
                 "name": "Annotations & Alerts",
+                "target": {
+                    "fromAnnotations": true,
+                    "queryType": "annotations",
+                    "tags": [""]
+                },
                 "type": "dashboard"
             }
         ]
@@ -18,7 +23,6 @@
     "editable": true,
     "fiscalYearStartMonth": 0,
     "graphTooltip": 0,
-    "id": 2,
     "links": [],
     "panels": [
         {
@@ -75,7 +79,7 @@
                     },
                     "refCount": 0,
                     "refId": "A",
-                    "target": "sumSeries(telegraf.*.*.*.*.*.loadtesting-task.*.loadtesting-task.*.loadtesting-container.eth1.*.*.ecs_container_net.rx_bytes)",
+                    "target": "sumSeries(telegraf.$User.$Simulation.*.*.*.*.*.loadtesting-task.*.loadtesting-task.*.loadtesting-container.eth1.*.*.ecs_container_net.rx_bytes)",
                     "textEditor": true
                 },
                 {
@@ -86,8 +90,8 @@
                     "hide": false,
                     "refCount": 0,
                     "refId": "B",
-                    "target": "sumSeries(telegraf.*.*.*.*.*.loadtesting-task.*.loadtesting-task.*.loadtesting-container.eth1.*.*.ecs_container_net.tx_bytes)",
-                    "textEditor": false
+                    "target": "sumSeries(telegraf.$User.$Simulation.*.*.*.*.*.loadtesting-task.*.loadtesting-task.*.loadtesting-container.eth1.*.*.ecs_container_net.tx_bytes)",
+                    "textEditor": true
                 }
             ],
             "title": "Received and Transmitted Data",
@@ -203,7 +207,7 @@
                     },
                     "refCount": 0,
                     "refId": "A",
-                    "target": "telegraf.*.*.*.*.*.loadtesting-task.*.loadtesting-task.*.loadtesting-container.total.*.*.ecs_container_net.rx_bytes",
+                    "target": "telegraf.$User.$Simulation.*.*.*.*.*.loadtesting-task.*.loadtesting-task.*.loadtesting-container.total.*.*.ecs_container_net.rx_bytes",
                     "textEditor": true
                 },
                 {
@@ -214,7 +218,7 @@
                     "hide": false,
                     "refCount": 0,
                     "refId": "B",
-                    "target": "telegraf.*.*.*.*.*.loadtesting-task.*.loadtesting-task.*.loadtesting-container.total.*.*.ecs_container_net.tx_bytes",
+                    "target": "telegraf.$User.$Simulation.*.*.*.*.*.loadtesting-task.*.loadtesting-task.*.loadtesting-container.total.*.*.ecs_container_net.tx_bytes",
                     "textEditor": true
                 }
             ],
@@ -334,7 +338,8 @@
                     },
                     "refCount": 0,
                     "refId": "A",
-                    "target": "telegraf.*.*.*.loadtesting-container.*.*.*.cpu-total.loadtesting-task.*.loadtesting-container.*.*.ecs_container_cpu.usage_percent"
+                    "target": "telegraf.$User.$Simulation.*.*.*.loadtesting-container.*.*.*.cpu-total.loadtesting-task.*.loadtesting-container.*.*.ecs_container_cpu.usage_percent",
+                    "textEditor": true
                 }
             ],
             "title": "CPU Usage",
@@ -423,7 +428,7 @@
                     },
                     "refCount": 0,
                     "refId": "A",
-                    "target": "telegraf.*.*.*.loadtesting-container.*.*.*.loadtesting-task.*.loadtesting-container.*.*.ecs_container_mem.usage",
+                    "target": "telegraf.$User.$Simulation.*.*.*.loadtesting-container.*.*.*.loadtesting-task.*.loadtesting-container.*.*.ecs_container_mem.usage",
                     "textEditor": true
                 }
             ],
@@ -431,11 +436,58 @@
             "type": "timeseries"
         }
     ],
-    "refresh": "",
+    "refresh": "auto",
     "schemaVersion": 39,
     "tags": [],
     "templating": {
-        "list": []
+        "list": [
+            {
+                "current": {
+                    "selected": true,
+                    "text": "All",
+                    "value": "$__all"
+                },
+                "definition": "telegraf.*",
+                "hide": 0,
+                "includeAll": true,
+                "multi": false,
+                "name": "User",
+                "options": [],
+                "query": {
+                    "queryType": "Default",
+                    "refId": "A",
+                    "target": "telegraf.*"
+                },
+                "refresh": 1,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 0,
+                "type": "query"
+            },
+            {
+                "current": {
+                    "selected": false,
+                    "text": "All",
+                    "value": "$__all"
+                },
+                "definition": "telegraf.$User.*",
+                "hide": 0,
+                "includeAll": true,
+                "multi": false,
+                "name": "Simulation",
+                "options": [],
+                "query": {
+                    "queryType": "Default",
+                    "refId": "A",
+                    "target": "telegraf.$User.*"
+                },
+                "refresh": 1,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 0,
+                "type": "query"
+            }
+        ]
     },
     "time": {
         "from": "now-15m",

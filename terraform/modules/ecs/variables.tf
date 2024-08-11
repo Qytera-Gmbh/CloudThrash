@@ -12,3 +12,5 @@ variable "security_group_id" {}
 variable "vpc_id" {}
 variable "grafana_admin_user" {}
 variable "grafana_admin_password" {}
+variable "user" {}
+variable "app_name" {}
