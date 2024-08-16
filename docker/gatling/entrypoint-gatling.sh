@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "IS_LEADER: $IS_LEADER"
+
 service nscd start &&
 while ! nc -z graphite.loadtest 2003; do
   echo "Waiting for graphite.loadtest:2003 to be available..."
@@ -30,5 +32,11 @@ mvn gatling:test -Dgatling.noReports=true -Dgatling.data.graphite.rootPathPrefix
 # Upload the results to S3 using the timestamp from the environment variable
 echo "Uploading results to S3..."
 for file in $(find ./target/gatling -type f -name simulation.log); do
-  aws s3 cp $file s3://$S3_BUCKET_NAME/gatling-results/$RUN_TIMESTAMP/${TASK_ID}.log
+  aws s3 cp $file s3://$S3_BUCKET_NAME/$S3_PREFIX/${TASK_ID}.log
 done
+
+# Check if this is the leader task
+if [ "$IS_LEADER" = "true" ]; then
+  echo "This is the leader task, creating the report..."
+  ./create-report.sh
+fi

@@ -4,14 +4,14 @@ set -e
 
 pushd $(dirname $0) > /dev/null
 
-echo "### SECTION [1/5] Initializing ###"
+echo "### SECTION [1/4] Initializing ###"
 
 . ./variables.sh
 ./check-dependencies.sh
 ./create-variables.sh
 ./deploy-docker-container.sh
 
-echo "### SECTION [2/5] Creating Infrastructure ###"
+echo "### SECTION [2/4] Creating Infrastructure ###"
 
 pushd ../terraform > /dev/null
 terraform init
@@ -24,7 +24,7 @@ ECS_CLUSTER_NAME=$(terraform output -raw ecs_cluster_name)
 get_running_task_arn() {
   TASK_ARN=$(aws ecs list-tasks \
     --cluster $ECS_CLUSTER_NAME \
-    --family loadtesting-task \
+    --family loadtesting-task-leader \
     --region $AWS_REGION \
     --profile $AWS_PROFILE \
     --query 'taskArns[0]' \
@@ -32,7 +32,7 @@ get_running_task_arn() {
 }
 
 # Wait for the task to start
-echo "### SECTION [3/5] Waiting for Task Execution ###"
+echo "### SECTION [3/4] Waiting for Task Execution ###"
 while true; do
   get_running_task_arn
   if [ "$TASK_ARN" != "None" ]; then
@@ -44,7 +44,7 @@ while true; do
 done
 
 # Function to check the status of the ECS task
-echo "### SECTION [4/5] Monitoring Task Status ###"
+echo "### SECTION [4/4] Monitoring Task Status ###"
 check_task_status() {
   TASK_STATUS=$(aws ecs describe-tasks \
     --cluster $ECS_CLUSTER_NAME \
@@ -67,7 +67,15 @@ done
 
 popd > /dev/null
 
-echo "### SECTION [5/5] Creating Report ###"
-./create-report.sh
+./list-result.sh
+status=$?
 
 popd > /dev/null
+
+if [ $status -eq 0 ]; then
+    echo "Test execution completed successfully."
+else
+    echo "Test execution failed."
+fi
+
+exit $status

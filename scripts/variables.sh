@@ -8,7 +8,7 @@ AWS_ACCOUNT_ID=$(aws sts get-caller-identity --profile $AWS_PROFILE --query Acco
 
 SLAVE_MEMORY=4096
 SLAVE_CPU=2048
-SLAVE_COUNT=1
+SLAVE_COUNT=2
 
 APP_NAME="BasicLoadSimulation"
 

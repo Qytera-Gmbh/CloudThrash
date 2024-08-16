@@ -6,8 +6,12 @@ output "slave_count" {
   value = var.slave_count
 }
 
-output "current_timestamp" {
-  value = local.current_timestamp
+output "unique_timestamp" {
+  value = local.unique_timestamp
+}
+
+output "s3_prefix" {
+  value = local.s3_prefix
 }
 
 output "grafana_admin_user" {
