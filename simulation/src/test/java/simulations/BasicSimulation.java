@@ -22,9 +22,9 @@ public class BasicSimulation extends Simulation {
                 setUp(scn.injectOpen(
                                 nothingFor(Duration.ofSeconds(15)),
                                 rampUsers(20).during(Duration.ofSeconds(30)),
-                                nothingFor(Duration.ofMinutes(2)),
+                                nothingFor(Duration.ofMinutes(30)),
                                 rampUsers(10).during(Duration.ofSeconds(30)))).protocols(httpProtocol)
-                                .maxDuration(Duration.ofMinutes(5)).assertions(
+                                .maxDuration(Duration.ofMinutes(2)).assertions(
                                                 global().responseTime().percentile2().lt(100),
                                                 global().successfulRequests().percent().gt(95.0));
         }

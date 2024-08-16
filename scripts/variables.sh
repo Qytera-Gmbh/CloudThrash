@@ -8,7 +8,7 @@ AWS_ACCOUNT_ID=$(aws sts get-caller-identity --profile $AWS_PROFILE --query Acco
 
 SLAVE_MEMORY=4096
 SLAVE_CPU=2048
-SLAVE_COUNT=2
+SLAVE_COUNT=2 # vCPU quota limit needs to be considered, Grafana and Graphite will also need same amount of resources
 
 APP_NAME="BasicLoadSimulation"
 

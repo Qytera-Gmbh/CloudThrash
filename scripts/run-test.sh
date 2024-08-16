@@ -19,12 +19,13 @@ terraform apply -auto-approve
 
 # Extract the ECS cluster name and AWS region from the Terraform output
 ECS_CLUSTER_NAME=$(terraform output -raw ecs_cluster_name)
+UNIQUE_TIMESTAMP=$(terraform output -raw unique_timestamp)
 
 # Function to get the running task ARN
 get_running_task_arn() {
   TASK_ARN=$(aws ecs list-tasks \
     --cluster $ECS_CLUSTER_NAME \
-    --family loadtesting-task-leader \
+    --family loadtesting-task-leader-$UNIQUE_TIMESTAMP \
     --region $AWS_REGION \
     --profile $AWS_PROFILE \
     --query 'taskArns[0]' \

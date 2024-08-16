@@ -10,7 +10,7 @@ locals {
 
 resource "aws_ecs_task_definition" "task" {
   tags                     = merge(var.common_tags, { "user" = var.user, "app_name" = var.app_name, "unique_timestamp" = local.unique_timestamp, "is_leader" = "false" })
-  family                   = "loadtesting-task-agent"
+  family                   = "loadtesting-task-agent-${local.unique_timestamp}"
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
   cpu                      = var.slave_cpu
@@ -76,7 +76,7 @@ resource "aws_ecs_task_definition" "task" {
 
 resource "aws_ecs_task_definition" "task_leader" {
   tags                     = merge(var.common_tags, { "user" = var.user, "app_name" = var.app_name, "unique_timestamp" = local.unique_timestamp, "is_leader" = "true" })
-  family                   = "loadtesting-task-leader"
+  family                   = "loadtesting-task-leader-${local.unique_timestamp}"
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
   cpu                      = var.slave_cpu
@@ -145,9 +145,11 @@ resource "aws_ecs_task_definition" "task_leader" {
 }
 
 data "aws_ecs_task_execution" "loadtesting_task_execution" {
+  count = var.slave_count - 1
+
   cluster         = aws_ecs_cluster.ecs_cluster.id
   task_definition = aws_ecs_task_definition.task.arn
-  desired_count   = var.slave_count - 1
+  desired_count   = 1
   launch_type     = "FARGATE"
 
   network_configuration {
