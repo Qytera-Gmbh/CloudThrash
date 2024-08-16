@@ -2,6 +2,24 @@
 
 set -e
 
+# Parse command-line arguments
+CI_MODE=false
+while getopts "ci" opt; do
+  case $opt in
+    c)
+      CI_MODE=true
+      ;;
+    i)
+      CI_MODE=true
+      ;;
+    *)
+      echo "Usage: $0 [-ci]"
+      echo "  -ci  Enable CI mode (should not be called concurrently from same directory), sets exit code based on test result"
+      exit 1
+      ;;
+  esac
+done
+
 pushd $(dirname $0) > /dev/null
 
 echo "### SECTION [1/4] Initializing ###"
@@ -68,8 +86,12 @@ done
 
 popd > /dev/null
 
-./list-result.sh
-status=$?
+# Conditionally call list-result.sh based on CI_MODE
+status=0
+if $CI_MODE; then
+  ./list-result.sh
+  status=$?
+fi
 
 popd > /dev/null
 

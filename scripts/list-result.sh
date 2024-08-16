@@ -1,6 +1,9 @@
 #!/bin/bash
 
-# Define variables
+pushd $(dirname $0) > /dev/null
+
+. ./variables.sh
+
 pushd ../terraform > /dev/null
 PREFIX=$(terraform output -raw s3_prefix)
 popd > /dev/null
@@ -28,4 +31,6 @@ for object in $object_list; do
 done
 
 # Exit with the appropriate status code
+popd > /dev/null
+
 exit $exit_status
