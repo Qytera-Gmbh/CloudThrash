@@ -1,6 +1,8 @@
-# Gatling Distributed Performance Testing
+# CloudThrash
 
-This repository provides a framework for distributed performance testing using Gatling, Graphite, and Grafana. It leverages Docker for containerized environments and Terraform for infrastructure as code.
+**_Thrash your Web-App until it hurts._**
+
+This repository provides a solution for distributed performance testing using Gatling, Graphite, and Grafana with AWS. It leverages Docker for containerized environments and Terraform for infrastructure as code.
 
 ## Features
 
