@@ -51,6 +51,7 @@ Technology Map:
 
 ### Prerequisites
 
+-   AWS CLI
 -   Docker
 -   Terraform
 -   Bash Shell (Git Bash on Windows is sufficient)
