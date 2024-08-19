@@ -1,5 +1,7 @@
 # CloudThrash
 
+<img src="docs/logo.jpg" alt="Logo" width="300" height="300">
+
 **_Thrash your Web-App until it hurts._**
 
 This repository provides a solution for distributed performance testing using Gatling, Graphite, and Grafana with AWS. It leverages Docker for containerized environments and Terraform for infrastructure as code.
