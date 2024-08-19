@@ -14,9 +14,6 @@ check_command() {
 # Check if AWS CLI is installed
 check_command aws
 
-# Check if AWS CLI is installed
-check_command 7z
-
 # Check if Terraform is installed
 check_command terraform
 

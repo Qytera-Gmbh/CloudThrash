@@ -7,7 +7,6 @@ pushd $(dirname $0) > /dev/null
 
 pushd ../terraform > /dev/null
 
-aws s3 rm s3://$S3_BUCKET_NAME --recursive --profile $AWS_PROFILE
 terraform destroy -auto-approve
 
 aws ecr describe-repositories --repository-names $ECR_REPOSITORY --profile $AWS_PROFILE --region $AWS_REGION && \
