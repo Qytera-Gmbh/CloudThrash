@@ -34,7 +34,7 @@ done
 
 # Handle cases where neither file is found
 if ! $found_success && ! $found_failure; then
-    echo "No success or failure files found under the prefix: $PREFIX"
+    echo "No success or failure files found under the prefix: $PREFIX, probably aborted"
 fi
 
 popd > /dev/null

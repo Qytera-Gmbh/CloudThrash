@@ -3,7 +3,100 @@
 pushd $(dirname $0) > /dev/null
 
 . ./variables.sh
-./stop-test.sh
+
+pushd ../terraform > /dev/null
+ECS_CLUSTER_NAME=$(terraform output -raw ecs_cluster_name)
+popd > /dev/null
+
+check_and_prompt_for_running_tasks() {
+  declare -A seen_tags
+  declare -A tasks_grouped_by_timestamp
+  local found_tasks=0
+
+  TASK_ARNS=$(aws ecs list-tasks \
+    --cluster $ECS_CLUSTER_NAME \
+    --desired-status RUNNING \
+    --region $AWS_REGION \
+    --profile $AWS_PROFILE \
+    --query 'taskArns[*]' \
+    --output text)
+
+  for TASK_ARN in $TASK_ARNS; do
+    TAGS_JSON=$(aws ecs list-tags-for-resource \
+      --resource-arn $TASK_ARN \
+      --region $AWS_REGION \
+      --profile $AWS_PROFILE \
+      --output json)
+
+    PROJECT=$(echo $TAGS_JSON | grep -Po '"key":\s*"Project",\s*"value":\s*"\K[^"]+')
+    APP_NAME=$(echo $TAGS_JSON | grep -Po '"key":\s*"app_name",\s*"value":\s*"\K[^"]+')
+    UNIQUE_TIMESTAMP=$(echo $TAGS_JSON | grep -Po '"key":\s*"unique_timestamp",\s*"value":\s*"\K[^"]+')
+    USER=$(echo $TAGS_JSON | grep -Po '"key":\s*"user",\s*"value":\s*"\K[^"]+')
+
+    if [ -n "$UNIQUE_TIMESTAMP" ]; then
+      tasks_grouped_by_timestamp[$UNIQUE_TIMESTAMP]="${tasks_grouped_by_timestamp[$UNIQUE_TIMESTAMP]} $TASK_ARN"
+      
+      if [ -z "${seen_tags[$UNIQUE_TIMESTAMP]}" ]; then
+        seen_tags[$UNIQUE_TIMESTAMP]=1
+        echo "Found running task with the following details:"
+        echo "Project: $PROJECT"
+        echo "App Name: $APP_NAME"
+        echo "Unique Timestamp: $UNIQUE_TIMESTAMP"
+        echo "User: $USER"
+        echo "-----------------------------"
+        found_tasks=1
+      fi
+    fi
+  done
+
+  if [ $found_tasks -eq 1 ]; then
+    echo "There are running tasks associated with these details. Do you want to stop them and proceed with deletion? (y/n)"
+    read -r user_response
+
+    if [[ "$user_response" =~ ^[Yy]$ ]]; then
+      for UNIQUE_TIMESTAMP in "${!tasks_grouped_by_timestamp[@]}"; do
+        echo "Stopping all tasks with Unique Timestamp: $UNIQUE_TIMESTAMP"
+        for TASK_ARN in ${tasks_grouped_by_timestamp[$UNIQUE_TIMESTAMP]}; do
+          aws ecs stop-task \
+            --cluster $ECS_CLUSTER_NAME \
+            --task $TASK_ARN \
+            --region $AWS_REGION \
+            --profile $AWS_PROFILE
+          echo "Stopped Task ARN: $TASK_ARN"
+        done
+      done
+    else
+      echo "Deletion canceled by user."
+      exit 0
+    fi
+  else
+    echo "No running tasks with unique timestamps were found. Proceeding with resource deletion."
+  fi
+}
+
+final_deletion_warning() {
+  echo ""
+  echo "---------------------------------------------"
+  echo "WARNING: You are about to delete all resources including:"
+  echo "- Terraform-managed infrastructure"
+  echo "- ECR Docker images"
+  echo "- S3 buckets containing test results"
+  echo "These resources will be permanently deleted and cannot be recovered."
+  echo "Do you really want to proceed? (y/n)"
+  read -r final_confirmation
+
+  if [[ "$final_confirmation" =~ ^[Yy]$ ]]; then
+    echo "Proceeding with deletion of all resources..."
+    return 0
+  else
+    echo "Deletion canceled by user."
+    exit 0
+  fi
+}
+
+check_and_prompt_for_running_tasks
+
+final_deletion_warning
 
 pushd ../terraform > /dev/null
 
