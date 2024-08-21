@@ -63,11 +63,6 @@ Technology Map:
 
 1. **Clone the Repository**
 
-    ```bash
-    git clone https://github.com/besessener/Gatling-Distributed-Performance-Testing.git
-    cd Gatling-Distributed-Performance-Testing
-    ```
-
 2. **Run the Test**
 
     The `run-test.sh` script will handle the entire process, including deploying Docker containers, creating the necessary cloud infrastructure with Terraform, and executing the Gatling performance test:
