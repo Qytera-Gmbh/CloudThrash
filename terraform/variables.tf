@@ -52,3 +52,7 @@ variable "app_name" {
   description = "App name"
   default     = "BasicSimulation"
 }
+
+variable "ecs_cluster_name" {
+  description = "ECS cluster name"
+}

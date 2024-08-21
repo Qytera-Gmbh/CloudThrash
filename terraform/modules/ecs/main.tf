@@ -1,5 +1,5 @@
 resource "aws_ecs_cluster" "ecs_cluster" {
-  name = "loadtesting-cluster"
+  name = var.ecs_cluster_name
   tags = var.common_tags
 }
 

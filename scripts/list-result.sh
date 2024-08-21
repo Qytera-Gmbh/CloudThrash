@@ -3,6 +3,7 @@
 pushd $(dirname $0) > /dev/null
 
 . ./variables.sh
+./init-terraform-backend.sh
 
 pushd ../terraform > /dev/null
 PREFIX=$(terraform output -raw s3_prefix)

@@ -21,6 +21,7 @@ module "ecs" {
   grafana_admin_password = var.grafana_admin_password
   user                   = var.user
   app_name               = var.app_name
+  ecs_cluster_name       = var.ecs_cluster_name
 }
 
 module "s3" {
@@ -36,7 +37,7 @@ module "network" {
 }
 
 terraform {
-  backend "local" {
-    path = ".terraform/tfstates/terraform.tfstate"
+  backend "s3" {
+    key = ".terraform/tfstates/terraform.tfstate"
   }
 }

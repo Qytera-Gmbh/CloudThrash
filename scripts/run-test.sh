@@ -13,12 +13,12 @@ echo "### SECTION [1/4] Initializing ###"
 
 echo "### SECTION [2/4] Creating Infrastructure ###"
 
+./init-terraform-backend.sh
+
 pushd ../terraform > /dev/null
-terraform init
 terraform apply -auto-approve
 
 # Extract the ECS cluster name and AWS region from the Terraform output
-ECS_CLUSTER_NAME=$(terraform output -raw ecs_cluster_name)
 UNIQUE_TIMESTAMP=$(terraform output -raw unique_timestamp)
 
 # Function to get the running task ARN

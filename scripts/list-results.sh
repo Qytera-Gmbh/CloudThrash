@@ -3,6 +3,7 @@
 pushd $(dirname $0) > /dev/null
 
 . ./variables.sh
+./init-terraform-backend.sh
 
 # Define variables
 pushd ../terraform > /dev/null

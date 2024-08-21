@@ -4,10 +4,6 @@ pushd $(dirname $0) > /dev/null
 
 . ./variables.sh
 
-pushd ../terraform > /dev/null
-ECS_CLUSTER_NAME=$(terraform output -raw ecs_cluster_name)
-popd > /dev/null
-
 stop_tasks_with_same_timestamp() {
   declare -A seen_tags
   declare -A timestamp_map

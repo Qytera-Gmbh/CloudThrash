@@ -21,7 +21,7 @@ resource "aws_ecs_task_definition" "task" {
 
   container_definitions = jsonencode([
     {
-      "stopTimeout" : 10,
+      "stopTimeout" : 300,
       "name" : "loadtesting-container",
       "image" : "${var.aws_account_id}.dkr.ecr.${var.aws_region}.amazonaws.com/${var.ecr_repository}:gatling-latest",
       "essential" : true,
@@ -88,7 +88,7 @@ resource "aws_ecs_task_definition" "task_leader" {
 
   container_definitions = jsonencode([
     {
-      "stopTimeout" : 10,
+      "stopTimeout" : 300,
       "name" : "loadtesting-container",
       "image" : "${var.aws_account_id}.dkr.ecr.${var.aws_region}.amazonaws.com/${var.ecr_repository}:gatling-latest",
       "essential" : true,

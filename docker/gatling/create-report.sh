@@ -45,6 +45,12 @@ else
   STATUS_FILE="failure"
 fi
 
+# If an argument is provided, overwrite STATUS_FILE with it
+if [ $# -gt 0 ]; then
+  echo "Overwriting status file with: $1"
+  STATUS_FILE=$1
+fi
+
 # Create an empty status file
 touch $STATUS_FILE
 

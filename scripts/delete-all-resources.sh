@@ -3,10 +3,7 @@
 pushd $(dirname $0) > /dev/null
 
 . ./variables.sh
-
-pushd ../terraform > /dev/null
-ECS_CLUSTER_NAME=$(terraform output -raw ecs_cluster_name)
-popd > /dev/null
+./init-terraform-backend.sh
 
 check_and_prompt_for_running_tasks() {
   declare -A seen_tags
@@ -104,6 +101,10 @@ terraform destroy -auto-approve
 
 aws ecr describe-repositories --repository-names $ECR_REPOSITORY --profile $AWS_PROFILE --region $AWS_REGION && \
 aws ecr delete-repository --repository-name $ECR_REPOSITORY --profile $AWS_PROFILE --region $AWS_REGION --force
+
+aws s3 rm s3://$S3_TF_STATE --recursive --region $AWS_REGION --profile $AWS_PROFILE
+aws s3api delete-bucket --bucket $S3_TF_STATE --region $AWS_REGION --profile $AWS_PROFILE
+aws dynamodb delete-table --table-name $DYNAMO_TF_STATE --region $AWS_REGION --profile $AWS_PROFILE
 
 popd > /dev/null
 popd > /dev/null
