@@ -74,7 +74,7 @@ Technology Map:
 
     <img src="docs/screenshot.png" alt="Screenshot" width="500" />
 
-3. **Alternatively: Run the Test**
+3. **Alternative: Run the Test in your bash**
 
     The `run-test.sh` script will handle the entire process, including deploying Docker containers, creating the necessary cloud infrastructure with Terraform, and executing the Gatling performance test:
 
