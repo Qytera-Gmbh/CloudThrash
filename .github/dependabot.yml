@@ -5,6 +5,11 @@ updates:
     schedule:
       interval: "weekly"
 
+  - package-ecosystem: "maven"
+    directory: "/ui"
+    schedule:
+      interval: "weekly"
+
   - package-ecosystem: "terraform"
     directory: "/terraform"
     schedule:

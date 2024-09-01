@@ -1,0 +1,25 @@
+/* Styling the slider track (unfilled part) */
+.jfx-slider > .track {
+    -fx-background-color: #BBDEFB; /* Light blue for the track */
+}
+
+/* Styling the slider thumb */
+.jfx-slider > .thumb {
+    -fx-background-color: #1976D2; /* Button blue for the thumb */
+}
+
+/* Styling the filled track */
+.jfx-slider > .colored-track {
+    -fx-background-color: #1976D2; /* Button blue for the filled part of the track */
+}
+
+/* Styling the animated thumb (if applicable) */
+.jfx-slider > .animated-thumb {
+    -fx-background-color: #0D47A1; /* Darker blue for the animated thumb */
+}
+
+/* Styling the slider value text inside the animated thumb */
+.jfx-slider .slider-value {
+    -fx-fill: white; /* White text color for better contrast */
+    -fx-stroke: white; /* White stroke for better visibility */
+}

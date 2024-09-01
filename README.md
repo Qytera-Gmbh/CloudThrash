@@ -35,12 +35,12 @@ Technology Map:
 -   **scripts/**: Shell scripts for managing the testing environment and processes.
 
     -   `run-test.sh`: Script to deploy Docker containers, create infrastructure, and run the Gatling test. **This is the entry point.** If nothing is running OR if infrastructure is up already, it will trigger a new test.
-    -   `stop-test.sh`: Script to stop a test.
-    -   `deploy-docker-container.sh`: Script to deploy the Docker containers, done automatically by `run-test-.sh` if required.
+    -   `stop-test.sh`: Script to stop a test, with user selection from running tests.
+    -   `deploy-docker-container.sh`: Script to deploy the Docker containers, done automatically by `run-test.sh` if required.
     -   `list-results.sh`: Script to list the test results.
-    -   `variables.sh`: Contains environment variables used across scripts. **This is the place where you need to put your configuration values right now.**
+    -   `variables.sh`: Contains environment variables used across scripts. **This is the place where you need to put your configuration values if you are not using the GUI.**
 
--   **simulation/**: Contains the Gatling simulation setup. This Gatling simulation is meant as a demo. My recommendation is to use an additional repository for your Gatling simulations, unless you use this entire setup for only one use case. If you want to run different simulations, this demo directory is not suitable anymore. Instead an external Git repository should be referenced.
+-   **simulation/**: Contains the Gatling simulation setup. This Gatling simulation is meant as a demo. My recommendation is to use an additional repository for your Gatling simulations, unless you use this entire setup for only one use case. If you want to run different simulations, this demo directory is not suitable anymore. Instead an external Git repository should be referenced. Furthermore the demo simulation can work as an easy way of testing single endpoints by configuring some environment variables (VUS, URL, DURATION).
 
     -   `src/test/java/simulations/BasicSimulation.java`: Example Gatling simulation.
     -   `pom.xml`: Maven configuration file.
@@ -63,7 +63,18 @@ Technology Map:
 
 1. **Clone the Repository**
 
-2. **Run the Test**
+    ```bash
+    git clone git@github.com:besessener/CloudThrash.git
+    cd CloudThrash
+    ```
+
+2. **Run the GUI**
+
+    Execute `run.sh` in the root to open the GUI. It should be self explanatory.
+
+    <img src="docs/screenshot.png" alt="Screenshot" width="500" />
+
+3. **Alternatively: Run the Test**
 
     The `run-test.sh` script will handle the entire process, including deploying Docker containers, creating the necessary cloud infrastructure with Terraform, and executing the Gatling performance test:
 
@@ -80,7 +91,7 @@ Technology Map:
         - normal task (n-1): will just run Gatling
         - leader (1): will run Gatling in the same way, but in the end wait for all tasks to finish and then create an overall report and push it to S3
 
-3. **Monitor Results**
+    **Monitoring**:
 
     Access Grafana to monitor the test results:
 
@@ -89,7 +100,7 @@ Technology Map:
     http://<grafana_url>:3000
     ```
 
-4. **Stop the Test**
+    **Stop the Test**
 
     When you want to abort a running test, execute the `stop-test.sh` script:
 
@@ -97,7 +108,7 @@ Technology Map:
     ./scripts/stop-test.sh
     ```
 
-5. **Clean Up**
+    **Clean Up**
 
     After the test is complete, you clean up resources using the `delete-all-resources.sh` script. **Be cautious: this will delete all resources, including the S3 bucket (containing the results) and the ECR registry with the docker images. If you restart your tests you have to upload the docker images again and results are lost forever.**
 
