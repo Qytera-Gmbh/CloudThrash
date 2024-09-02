@@ -3,6 +3,13 @@
 pushd $(dirname $0) > /dev/null
 
 . ./variables.sh
+
+object_list=$(aws s3api list-objects-v2 --bucket "$S3_BUCKET_NAME" --profile "$AWS_PROFILE" --query 'Contents[].Key' --output text)
+if [ -z "$object_list" ]; then
+    echo "No objects found under the bucket: $S3_BUCKET_NAME"
+    exit 1
+fi
+
 ./init-terraform-backend.sh
 
 # Define variables
@@ -23,6 +30,7 @@ found_success=false
 found_failure=false
 
 # Loop through objects and identify the correct folders
+echo "Results:"
 for object in $object_list; do
     if [[ "$object" == *"/$FAILURE_FILE" ]]; then
         echo "${object%/*}/ - failure"

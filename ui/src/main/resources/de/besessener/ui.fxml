@@ -14,10 +14,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
 <ScrollPane prefWidth="478.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AppController">
    <content>
-      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1027.0" prefWidth="475.0" style="-fx-background-color: white;">
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1069.0" prefWidth="475.0" style="-fx-background-color: white;">
          <children>
             <JFXButton fx:id="buttonCheckDependencies" layoutX="14.0" layoutY="14.0" onAction="#handleButtonCheckDependenciesClick" prefHeight="41.0" prefWidth="207.0" ripplerFill="BLACK" style="-fx-background-color: #1976D2;" text="Check Dependencies" textFill="WHITE" AnchorPane.topAnchor="14.0">
                <opaqueInsets>
@@ -30,7 +29,7 @@
                   <FontAwesomeIconView fill="WHITE" glyphName="CHECK" />
                </graphic>
             </JFXButton>
-            <JFXButton layoutX="14.0" layoutY="55.0" prefHeight="41.0" prefWidth="207.0" ripplerFill="BLACK" style="-fx-background-color: #1976D2;" text="Run Test" textFill="WHITE" AnchorPane.topAnchor="70.0">
+            <JFXButton fx:id="runTestButton" layoutX="14.0" layoutY="55.0" onAction="#handleButtonRunTestClick" prefHeight="41.0" prefWidth="207.0" ripplerFill="BLACK" style="-fx-background-color: #1976D2;" text="Run Test" textFill="WHITE" AnchorPane.topAnchor="70.0">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -38,10 +37,10 @@
                   <Font name="System Bold" size="12.0" />
                </font>
                <graphic>
-                  <FontAwesomeIconView fill="WHITE" glyphName="PLAY" />
+                  <FontAwesomeIconView fx:id="runTestButtonIcon" fill="WHITE" glyphName="PLAY" />
                </graphic>
             </JFXButton>
-            <JFXButton disable="true" layoutX="14.0" layoutY="145.0" prefHeight="41.0" prefWidth="207.0" ripplerFill="BLACK" style="-fx-background-color: #1976D2;" text="Stop Test" textFill="WHITE" AnchorPane.topAnchor="125.0">
+            <JFXButton fx:id="stopTestButton" disable="true" layoutX="14.0" layoutY="145.0" onAction="#handleButtonStopTestClick" prefHeight="41.0" prefWidth="207.0" ripplerFill="BLACK" style="-fx-background-color: #1976D2;" text="Stop Test" textFill="WHITE" AnchorPane.topAnchor="125.0">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -52,7 +51,7 @@
                   <FontAwesomeIconView fill="WHITE" glyphName="POWER_OFF" />
                </graphic>
             </JFXButton>
-            <JFXButton disable="true" layoutX="237.0" layoutY="125.0" prefHeight="41.0" prefWidth="207.0" ripplerFill="BLACK" style="-fx-background-color: #1976D2;" text="Delete All Resources" textFill="WHITE">
+            <JFXButton fx:id="deleteResourcesButton" disable="true" layoutX="237.0" layoutY="125.0" onAction="#handleButtonDeleteResourcesClick" prefHeight="41.0" prefWidth="207.0" ripplerFill="BLACK" style="-fx-background-color: #1976D2;" text="Delete All Resources" textFill="WHITE">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -60,7 +59,7 @@
                   <FontAwesomeIconView fill="WHITE" glyphName="TRASH" />
                </graphic>
             </JFXButton>
-            <JFXButton disable="true" layoutX="237.0" layoutY="70.0" prefHeight="41.0" prefWidth="207.0" ripplerFill="BLACK" style="-fx-background-color: #1976D2;" text="Open Grafana" textFill="WHITE">
+            <JFXButton fx:id="openGrafanaButton" disable="true" layoutX="237.0" layoutY="70.0" onAction="#handleButtonOpenGrafanaClick" prefHeight="41.0" prefWidth="207.0" ripplerFill="BLACK" style="-fx-background-color: #1976D2;" text="Open Grafana" textFill="WHITE">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -71,19 +70,19 @@
                   <FontAwesomeIconView fill="WHITE" glyphName="TACHOMETER" />
                </graphic>
             </JFXButton>
-            <JFXListView fx:id="results" layoutX="15.0" layoutY="667.0" prefHeight="143.0" prefWidth="431.0" style="-fx-background-color: #F5F5F5;" />
-            <Text layoutX="15.0" layoutY="841.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Logs:" />
-            <JFXComboBox editable="true" layoutX="128.0" layoutY="237.0" prefHeight="25.0" prefWidth="283.0" promptText="default" />
-            <Text layoutX="21.0" layoutY="254.0" strokeType="OUTSIDE" strokeWidth="0.0" text="AWS Profile:" />
-            <JFXComboBox editable="true" layoutX="128.0" layoutY="280.0" prefHeight="25.0" prefWidth="283.0" promptText="us-east-1" />
-            <Text layoutX="19.0" layoutY="297.0" strokeType="OUTSIDE" strokeWidth="0.0" text="AWS Region:" />
-            <Text layoutX="19.0" layoutY="350.0" strokeType="OUTSIDE" strokeWidth="0.0" text="# of Load Agents:" />
-            <Text layoutX="19.0" layoutY="384.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Agent CPU:" />
-            <Text layoutX="19.0" layoutY="421.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Agent Memory" />
-            <Text layoutX="409.0" layoutY="349.0" strokeType="OUTSIDE" strokeWidth="0.0" text="5" />
-            <Text layoutX="409.0" layoutY="384.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2048" />
-            <Text layoutX="410.0" layoutY="421.0" strokeType="OUTSIDE" strokeWidth="0.0" text="4096" />
-            <Text layoutX="15.0" layoutY="663.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Results:" />
+            <JFXListView fx:id="results" layoutX="15.0" layoutY="719.0" prefHeight="143.0" prefWidth="431.0" style="-fx-background-color: #F5F5F5;" />
+            <Text layoutX="15.0" layoutY="893.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Logs:" />
+            <JFXComboBox editable="true" layoutX="131.0" layoutY="275.0" prefHeight="25.0" prefWidth="283.0" promptText="default" />
+            <Text layoutX="20.0" layoutY="292.0" strokeType="OUTSIDE" strokeWidth="0.0" text="AWS Profile:" />
+            <JFXComboBox editable="true" layoutX="131.0" layoutY="318.0" prefHeight="25.0" prefWidth="283.0" promptText="us-east-1" />
+            <Text layoutX="21.0" layoutY="335.0" strokeType="OUTSIDE" strokeWidth="0.0" text="AWS Region:" />
+            <Text layoutX="22.0" layoutY="388.0" strokeType="OUTSIDE" strokeWidth="0.0" text="# of Load Agents:" />
+            <Text layoutX="22.0" layoutY="422.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Agent CPU:" />
+            <Text layoutX="22.0" layoutY="459.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Agent Memory" />
+            <Text layoutX="412.0" layoutY="387.0" strokeType="OUTSIDE" strokeWidth="0.0" text="5" />
+            <Text layoutX="412.0" layoutY="422.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2048" />
+            <Text layoutX="413.0" layoutY="459.0" strokeType="OUTSIDE" strokeWidth="0.0" text="4096" />
+            <Text layoutX="15.0" layoutY="715.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Results:" />
             <TextField layoutX="129.0" layoutY="193.0" prefHeight="28.0" prefWidth="283.0" style="-fx-background-color: white; -fx-border-color: grey;" text="demo" />
             <Text layoutX="21.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gatling Simulation:" />
             <Text layoutX="264.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CloudThrash">
@@ -101,21 +100,24 @@
                   <Tooltip text="You have 2 options: keep the demo mode and change URL in environment variables section to do a simple URL test, or specify a git repository with a maven Gatling project to run." wrapText="true" />
                </tooltip>
             </JFXButton>
-            <Text layoutX="15.0" layoutY="462.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Environment Variables:" />
-            <JFXSlider blockIncrement="1.0" layoutX="129.0" layoutY="338.0" majorTickUnit="4.0" max="25.0" min="1.0" minorTickCount="1" prefHeight="14.0" prefWidth="265.0" showTickLabels="true" stylesheets="@./slider.css" value="5.0" />
-            <JFXSlider blockIncrement="1.0" layoutX="128.0" layoutY="372.0" majorTickUnit="16384.0" max="16384.0" min="512.0" minorTickCount="0" prefHeight="14.0" prefWidth="265.0" showTickLabels="true" stylesheets="@./slider.css" value="2048.0" />
-            <JFXSlider layoutX="128.0" layoutY="409.0" majorTickUnit="32768.0" max="32768.0" min="512.0" minorTickCount="1" prefHeight="14.0" prefWidth="265.0" showTickLabels="true" stylesheets="@./slider.css" value="4096.0" />
-            <JFXButton layoutX="417.0" layoutY="668.0" prefHeight="25.0" prefWidth="26.0" style="-fx-background-color: #ffffff00;">
+            <Text layoutX="15.0" layoutY="514.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Environment Variables:" />
+            <JFXSlider blockIncrement="1.0" layoutX="132.0" layoutY="376.0" majorTickUnit="4.0" max="25.0" min="1.0" minorTickCount="1" prefHeight="14.0" prefWidth="265.0" showTickLabels="true" stylesheets="@./slider.css" value="5.0" />
+            <JFXSlider blockIncrement="1.0" layoutX="131.0" layoutY="410.0" majorTickUnit="16384.0" max="16384.0" min="512.0" minorTickCount="0" prefHeight="14.0" prefWidth="265.0" showTickLabels="true" stylesheets="@./slider.css" value="2048.0" />
+            <JFXSlider layoutX="131.0" layoutY="447.0" majorTickUnit="32768.0" max="32768.0" min="512.0" minorTickCount="1" prefHeight="14.0" prefWidth="265.0" showTickLabels="true" stylesheets="@./slider.css" value="4096.0" />
+            <JFXButton fx:id="refreshResultsButton" layoutX="417.0" layoutY="720.0" onAction="#handleButtonRefreshResultsClick" prefHeight="25.0" prefWidth="26.0" style="-fx-background-color: #ffffff00;">
                <graphic>
-                  <FontAwesomeIconView glyphName="REFRESH" size="18" />
+                  <FontAwesomeIconView fx:id="refreshButtonIcon" glyphName="REFRESH" size="18" />
                </graphic>
             </JFXButton>
-            <FontAwesomeIconView fill="#1976d2" glyphName="INFO" layoutX="424.0" layoutY="256.0" size="18" textAlignment="CENTER" wrappingWidth="12.0" />
-            <FontAwesomeIconView fill="#1976d2" glyphName="INFO" layoutX="143.0" layoutY="461.0" size="12" textAlignment="CENTER" wrappingWidth="12.0" />
-            <FontAwesomeIconView fill="#1976d2" glyphName="INFO" layoutX="424.0" layoutY="213.0" size="18" textAlignment="CENTER" wrappingWidth="12.0" />
-            <FontAwesomeIconView fill="#1976d2" glyphName="INFO" layoutX="424.0" layoutY="298.0" size="18" textAlignment="CENTER" wrappingWidth="12.0" />
-            <JFXTextArea fx:id="logOutput" editable="false" layoutX="15.0" layoutY="845.0" prefHeight="153.0" prefWidth="431.0" style="-fx-background-color: #F5F5F5;" />
-            <JFXTextArea fx:id="envvars" layoutX="15.0" layoutY="466.0" prefHeight="153.0" prefWidth="431.0" style="-fx-background-color: #F5F5F5;" />
+            <FontAwesomeIconView fill="#1976d2" glyphName="INFO" layoutX="427.0" layoutY="294.0" size="18" textAlignment="CENTER" wrappingWidth="12.0" />
+            <FontAwesomeIconView fill="#1976d2" glyphName="INFO" layoutX="143.0" layoutY="513.0" size="12" textAlignment="CENTER" wrappingWidth="12.0" />
+            <FontAwesomeIconView fill="#1976d2" glyphName="INFO" layoutX="427.0" layoutY="213.0" size="18" textAlignment="CENTER" wrappingWidth="12.0" />
+            <FontAwesomeIconView fill="#1976d2" glyphName="INFO" layoutX="427.0" layoutY="336.0" size="18" textAlignment="CENTER" wrappingWidth="12.0" />
+            <JFXTextArea fx:id="logOutput" editable="false" layoutX="15.0" layoutY="897.0" prefHeight="153.0" prefWidth="431.0" style="-fx-background-color: #F5F5F5;" />
+            <JFXTextArea fx:id="envvars" layoutX="15.0" layoutY="518.0" prefHeight="153.0" prefWidth="431.0" style="-fx-background-color: #F5F5F5;" text="#VUS=100&#10;#URL=https://google.com&#10;#DURATION=60" />
+            <TextField layoutX="129.0" layoutY="232.0" prefHeight="28.0" prefWidth="283.0" style="-fx-background-color: white; -fx-border-color: grey;" text="BasicSimulation" />
+            <Text layoutX="21.0" layoutY="251.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Simulation Name" />
+            <FontAwesomeIconView fill="#1976d2" glyphName="INFO" layoutX="427.0" layoutY="252.0" size="18" textAlignment="CENTER" wrappingWidth="12.0" />
          </children>
       </AnchorPane>
    </content>
