@@ -54,6 +54,12 @@ public class AppController {
     private FontAwesomeIconView runTestButtonIcon;
 
     @FXML
+    private FontAwesomeIconView openGrafanaButtonIcon;
+
+    @FXML
+    private FontAwesomeIconView deleteResourcesButtonIcon;
+
+    @FXML
     public void initialize() {
         // Initialization code if needed
     }
@@ -137,14 +143,44 @@ public class AppController {
 
     @FXML
     private void handleButtonOpenGrafanaClick() {
+        openGrafanaButton.setDisable(true);
+        openGrafanaButtonIcon.setGlyphName("SPINNER");
+        startSpinnerAnimation(openGrafanaButtonIcon);
         String scriptPath = "../scripts/open-grafana.sh";
-        ShellScript.runShellScript(scriptPath, logOutput);
+        Task<ShellScriptResult> task = ShellScript.runShellScript(scriptPath, logOutput);
+
+        task.setOnSucceeded(event -> {
+            stopSpinnerAnimation(openGrafanaButtonIcon);
+            openGrafanaButtonIcon.setGlyphName("TACHOMETER");
+            openGrafanaButton.setDisable(false);
+        });
+
+        task.setOnFailed(event -> {
+            stopSpinnerAnimation(openGrafanaButtonIcon);
+            openGrafanaButtonIcon.setGlyphName("TACHOMETER");
+            openGrafanaButton.setDisable(false);
+        });
     }
 
     @FXML
     private void handleButtonDeleteResourcesClick() {
-        String scriptPath = "../scripts/delete-all-resources.sh";
-        ShellScript.runShellScript(scriptPath, logOutput);
+        deleteResourcesButton.setDisable(true);
+        deleteResourcesButtonIcon.setGlyphName("SPINNER");
+        startSpinnerAnimation(deleteResourcesButtonIcon);
+        String scriptPath = "../scripts/delete-all-resources.sh -y";
+        Task<ShellScriptResult> task = ShellScript.runShellScript(scriptPath, logOutput);
+
+        task.setOnSucceeded(event -> {
+            stopSpinnerAnimation(deleteResourcesButtonIcon);
+            deleteResourcesButtonIcon.setGlyphName("TRASH");
+            deleteResourcesButton.setDisable(false);
+        });
+
+        task.setOnFailed(event -> {
+            stopSpinnerAnimation(deleteResourcesButtonIcon);
+            deleteResourcesButtonIcon.setGlyphName("TRASH");
+            deleteResourcesButton.setDisable(false);
+        });
     }
 
     private void startSpinnerAnimation(FontAwesomeIconView icon) {

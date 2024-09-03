@@ -51,15 +51,15 @@
                   <FontAwesomeIconView fill="WHITE" glyphName="POWER_OFF" />
                </graphic>
             </JFXButton>
-            <JFXButton fx:id="deleteResourcesButton" disable="true" layoutX="237.0" layoutY="125.0" onAction="#handleButtonDeleteResourcesClick" prefHeight="41.0" prefWidth="207.0" ripplerFill="BLACK" style="-fx-background-color: #1976D2;" text="Delete All Resources" textFill="WHITE">
+            <JFXButton fx:id="deleteResourcesButton" layoutX="237.0" layoutY="125.0" onAction="#handleButtonDeleteResourcesClick" prefHeight="41.0" prefWidth="207.0" ripplerFill="BLACK" style="-fx-background-color: #1976D2;" text="Delete All Resources" textFill="WHITE">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
                <graphic>
-                  <FontAwesomeIconView fill="WHITE" glyphName="TRASH" />
+                  <FontAwesomeIconView fx:id="deleteResourcesButtonIcon" fill="WHITE" glyphName="TRASH" />
                </graphic>
             </JFXButton>
-            <JFXButton fx:id="openGrafanaButton" disable="true" layoutX="237.0" layoutY="70.0" onAction="#handleButtonOpenGrafanaClick" prefHeight="41.0" prefWidth="207.0" ripplerFill="BLACK" style="-fx-background-color: #1976D2;" text="Open Grafana" textFill="WHITE">
+            <JFXButton fx:id="openGrafanaButton" layoutX="237.0" layoutY="70.0" onAction="#handleButtonOpenGrafanaClick" prefHeight="41.0" prefWidth="207.0" ripplerFill="BLACK" style="-fx-background-color: #1976D2;" text="Open Grafana" textFill="WHITE">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -67,7 +67,7 @@
                   <Font name="System Bold" size="12.0" />
                </font>
                <graphic>
-                  <FontAwesomeIconView fill="WHITE" glyphName="TACHOMETER" />
+                  <FontAwesomeIconView fx:id="openGrafanaButtonIcon" fill="WHITE" glyphName="TACHOMETER" />
                </graphic>
             </JFXButton>
             <JFXListView fx:id="results" layoutX="15.0" layoutY="719.0" prefHeight="143.0" prefWidth="431.0" style="-fx-background-color: #F5F5F5;" />

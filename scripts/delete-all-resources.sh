@@ -1,5 +1,21 @@
 #!/bin/bash
 
+# Initialize a variable for the -y option
+auto_yes=false
+
+# Check for the -y option
+while getopts "y" opt; do
+  case $opt in
+    y)
+      auto_yes=true
+      ;;
+    \?)
+      echo "Invalid option: -$OPTARG" >&2
+      exit 1
+      ;;
+  esac
+done
+
 pushd $(dirname $0) > /dev/null
 
 . ./variables.sh
@@ -47,8 +63,12 @@ check_and_prompt_for_running_tasks() {
   done
 
   if [ $found_tasks -eq 1 ]; then
-    echo "There are running tasks associated with these details. Do you want to stop them and proceed with deletion? (y/n)"
-    read -r user_response
+    if [ "$auto_yes" = true ]; then
+      user_response="y"
+    else
+      echo "There are running tasks associated with these details. Do you want to stop them and proceed with deletion? (y/n)"
+      read -r user_response
+    fi
 
     if [[ "$user_response" =~ ^[Yy]$ ]]; then
       for UNIQUE_TIMESTAMP in "${!tasks_grouped_by_timestamp[@]}"; do
@@ -72,15 +92,19 @@ check_and_prompt_for_running_tasks() {
 }
 
 final_deletion_warning() {
-  echo ""
-  echo "---------------------------------------------"
-  echo "WARNING: You are about to delete all resources including:"
-  echo "- Terraform-managed infrastructure"
-  echo "- ECR Docker images"
-  echo "- S3 buckets containing test results"
-  echo "These resources will be permanently deleted and cannot be recovered."
-  echo "Do you really want to proceed? (y/n)"
-  read -r final_confirmation
+  if [ "$auto_yes" = true ]; then
+    final_confirmation="y"
+  else
+    echo ""
+    echo "---------------------------------------------"
+    echo "WARNING: You are about to delete all resources including:"
+    echo "- Terraform-managed infrastructure"
+    echo "- ECR Docker images"
+    echo "- S3 buckets containing test results"
+    echo "These resources will be permanently deleted and cannot be recovered."
+    echo "Do you really want to proceed? (y/n)"
+    read -r final_confirmation
+  fi
 
   if [[ "$final_confirmation" =~ ^[Yy]$ ]]; then
     echo "Proceeding with deletion of all resources..."
