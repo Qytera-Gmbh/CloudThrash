@@ -1,6 +1,6 @@
 #!/bin/bash
 
-pushd ui
+pushd app
 
 ./mvnw clean install
 ./mvnw javafx:run 
