@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
+
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.scene.control.TextArea;
@@ -15,6 +17,11 @@ public class ShellScript {
     private static StringBuilder logBuilder = new StringBuilder();
 
     public static Task<ShellScriptResult> runShellScript(String scriptPath, TextArea logOutput) {
+        return runShellScript(scriptPath, logOutput, null);
+    }
+
+    public static Task<ShellScriptResult> runShellScript(String scriptPath, TextArea logOutput,
+            Map<String, String> env) {
         Task<ShellScriptResult> task = new Task<>() {
             @Override
             protected ShellScriptResult call() throws Exception {
@@ -25,6 +32,11 @@ public class ShellScript {
                 // Create ProcessBuilder and redirect error stream to output stream
                 ProcessBuilder processBuilder = new ProcessBuilder(gitBashPath, "-c", scriptPath);
                 processBuilder.redirectErrorStream(true); // Redirects stderr to stdout
+
+                if (env != null && !env.isEmpty()) {
+                    Map<String, String> processEnv = processBuilder.environment();
+                    processEnv.putAll(env);
+                }
 
                 int exitCode = -1;
 
@@ -69,7 +81,7 @@ public class ShellScript {
         return task;
     }
 
-    private static void updateLog(TextArea logOutput, String logText) {
+    public static void updateLog(TextArea logOutput, String logText) {
         Platform.runLater(() -> {
             logOutput.setText(logText);
             logOutput.setScrollTop(Double.MAX_VALUE);

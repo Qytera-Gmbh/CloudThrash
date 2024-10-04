@@ -1,20 +1,32 @@
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.text.Text;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Slider;
+import javafx.scene.control.Tooltip;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.control.ListView;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringReader;
+import java.io.FileReader;
 import javafx.concurrent.Task;
 import de.besessener.ShellScript;
 import de.besessener.ShellScriptResult;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.animation.RotateTransition;
 import javafx.util.Duration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.regex.*;
+import java.nio.file.Paths;
 
 public class AppController {
 
@@ -60,8 +72,103 @@ public class AppController {
     private FontAwesomeIconView deleteResourcesButtonIcon;
 
     @FXML
+    private TextField simulationPathTextField;
+
+    @FXML
+    private TextField simulationNameTextField;
+
+    @FXML
+    private ComboBox awsProfileComboBox;
+
+    @FXML
+    private ComboBox awsRegionComboBox;
+
+    @FXML
+    private Slider numberOfLoadAgentsSlider;
+
+    @FXML
+    private Slider agentCpuSlider;
+
+    @FXML
+    private Slider agentMemorySlider;
+
+    @FXML
+    private FontAwesomeIconView simulationPathInfoIcon;
+
+    @FXML
+    private FontAwesomeIconView simulationNameInfoIcon;
+
+    @FXML
+    private FontAwesomeIconView awsProfileInfoIcon;
+
+    @FXML
+    private FontAwesomeIconView awsRegionInfoIcon;
+
+    @FXML
+    private Text numberOfAgentsInfo;
+
+    @FXML
+    private Text agentsCpuInfo;
+
+    @FXML
+    private Text agentsMemoryInfo;
+
+    @FXML
+    private FontAwesomeIconView envvarInfoIcon;
+
+    @FXML
     public void initialize() {
-        // Initialization code if needed
+        // tooltips
+        Tooltip.install(simulationPathInfoIcon,
+                new Tooltip("Give a complete path, Git URL or leave it to 'demo' for a simple URL test."));
+        Tooltip.install(simulationNameInfoIcon, new Tooltip(
+                "Give a name to your simulation that will be used for AWS resources and Grafana Dashboards."));
+        Tooltip.install(awsProfileInfoIcon, new Tooltip("A AWS profile name from your ~/.aws/* files."));
+        Tooltip.install(awsRegionInfoIcon, new Tooltip("A AWS region name, like 'us-east-1' or 'eu-central-1'."));
+        Tooltip.install(envvarInfoIcon, new Tooltip(
+                "Set environment variables for the simulation. Example: 'VUS' for the number of virtual users, 'DURATION' for the test duration and 'URL' for the target URL."));
+
+        // listeners
+        numberOfLoadAgentsSlider.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                int roundedValue = (int) Math.round(newValue.doubleValue());
+                numberOfAgentsInfo.setText(String.valueOf(roundedValue));
+            }
+        });
+
+        agentCpuSlider.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                int roundedValue = (int) Math.round(newValue.doubleValue());
+                agentsCpuInfo.setText(String.valueOf(roundedValue));
+            }
+        });
+
+        agentMemorySlider.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                int roundedValue = (int) Math.round(newValue.doubleValue());
+                agentsMemoryInfo.setText(String.valueOf(roundedValue));
+            }
+        });
+
+        // set default values
+        String homeDirectory = System.getProperty("user.home");
+        String filePath = Paths.get(homeDirectory, ".aws", "credentials").toString();
+        Set<String> sections = getSectionNames(filePath);
+        sections.add("default");
+        for (String section : sections) {
+            awsProfileComboBox.getItems().add(section);
+        }
+        awsProfileComboBox.setValue("default");
+
+        awsRegionComboBox.getItems().addAll("us-east-1", "us-east-2", "us-west-1", "us-west-2", "eu-central-1",
+                "eu-west-1", "eu-west-2", "eu-west-3", "eu-north-1", "ap-northeast-1", "ap-northeast-2",
+                "ap-northeast-3", "ap-southeast-1", "ap-southeast-2", "ap-south-1", "sa-east-1", "ca-central-1");
+        awsRegionComboBox.setValue("us-east-1");
+
+        logOutput.setText("Initialization done.\n");
     }
 
     @FXML
@@ -119,7 +226,17 @@ public class AppController {
         runTestButtonIcon.setGlyphName("SPINNER");
         startSpinnerAnimation(runTestButtonIcon);
         String scriptPath = "../scripts/run-test.sh";
-        Task<ShellScriptResult> task = ShellScript.runShellScript(scriptPath, logOutput);
+        Map<String, String> env = Map.of("AWS_PROFILE", awsProfileComboBox.getValue().toString(), "AWS_REGION",
+                awsRegionComboBox.getValue().toString(), "SLAVE_COUNT", numberOfAgentsInfo.getText(), "SLAVE_CPU",
+                agentsCpuInfo.getText(), "SLAVE_MEMORY", agentsMemoryInfo.getText(), "APP_NAME",
+                simulationNameTextField.getText());
+        for (String envvar : envvars.getText().split("\n")) {
+            String[] parts = envvar.split("=");
+            if (parts.length == 2 && !parts[0].startsWith("#")) {
+                env.put(parts[0], parts[1]);
+            }
+        }
+        Task<ShellScriptResult> task = ShellScript.runShellScript(scriptPath, logOutput, env);
         task.setOnSucceeded(event -> {
             stopSpinnerAnimation(runTestButtonIcon);
             runTestButtonIcon.setGlyphName("PLAY");
@@ -200,5 +317,28 @@ public class AppController {
 
             rotateTransitionMap.remove(icon);
         }
+    }
+
+    // Method to get section names from INI file
+    public static Set<String> getSectionNames(String filePath) {
+        Set<String> sectionNames = new HashSet<>();
+        Pattern sectionPattern = Pattern.compile("\\[([^]]+)]");
+
+        try {
+            try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    Matcher matcher = sectionPattern.matcher(line);
+                    if (matcher.find()) {
+                        // Add the section name without the brackets
+                        sectionNames.add(matcher.group(1));
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return sectionNames;
     }
 }
