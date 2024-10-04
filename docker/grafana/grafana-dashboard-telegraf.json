@@ -79,7 +79,7 @@
                     },
                     "refCount": 0,
                     "refId": "A",
-                    "target": "sumSeries(telegraf.$User.$Simulation.*.*.*.*.*.loadtesting-task.*.loadtesting-task.*.loadtesting-container.eth1.*.*.ecs_container_net.rx_bytes)",
+                    "target": "sumSeries(telegraf.$User.$Simulation.*.*.*.*.*.*.*.*.*.loadtesting-container.eth1.*.*.ecs_container_net.rx_bytes)",
                     "textEditor": true
                 },
                 {
@@ -90,7 +90,7 @@
                     "hide": false,
                     "refCount": 0,
                     "refId": "B",
-                    "target": "sumSeries(telegraf.$User.$Simulation.*.*.*.*.*.loadtesting-task.*.loadtesting-task.*.loadtesting-container.eth1.*.*.ecs_container_net.tx_bytes)",
+                    "target": "sumSeries(telegraf.$User.$Simulation.*.*.*.*.*.*.*.*.*.loadtesting-container.eth1.*.*.ecs_container_net.tx_bytes)",
                     "textEditor": true
                 }
             ],
@@ -207,7 +207,7 @@
                     },
                     "refCount": 0,
                     "refId": "A",
-                    "target": "telegraf.$User.$Simulation.*.*.*.*.*.loadtesting-task.*.loadtesting-task.*.loadtesting-container.total.*.*.ecs_container_net.rx_bytes",
+                    "target": "telegraf.$User.$Simulation.*.*.*.*.*.*.*.*.*.loadtesting-container.total.*.*.ecs_container_net.rx_bytes",
                     "textEditor": true
                 },
                 {
@@ -218,7 +218,7 @@
                     "hide": false,
                     "refCount": 0,
                     "refId": "B",
-                    "target": "telegraf.$User.$Simulation.*.*.*.*.*.loadtesting-task.*.loadtesting-task.*.loadtesting-container.total.*.*.ecs_container_net.tx_bytes",
+                    "target": "telegraf.$User.$Simulation.*.*.*.*.*.*.*.*.*.loadtesting-container.total.*.*.ecs_container_net.tx_bytes",
                     "textEditor": true
                 }
             ],
@@ -338,7 +338,7 @@
                     },
                     "refCount": 0,
                     "refId": "A",
-                    "target": "telegraf.$User.$Simulation.*.*.*.loadtesting-container.*.*.*.cpu-total.loadtesting-task.*.loadtesting-container.*.*.ecs_container_cpu.usage_percent",
+                    "target": "telegraf.$User.$Simulation.*.*.*.loadtesting-container.*.*.*.cpu-total.*.*.loadtesting-container.*.*.ecs_container_cpu.usage_percent",
                     "textEditor": true
                 }
             ],
@@ -428,7 +428,7 @@
                     },
                     "refCount": 0,
                     "refId": "A",
-                    "target": "telegraf.$User.$Simulation.*.*.*.loadtesting-container.*.*.*.loadtesting-task.*.loadtesting-container.*.*.ecs_container_mem.usage",
+                    "target": "telegraf.$User.$Simulation.*.*.*.loadtesting-container.*.*.*.*.*.loadtesting-container.*.*.ecs_container_mem.usage",
                     "textEditor": true
                 }
             ],
