@@ -114,7 +114,7 @@
             <FontAwesomeIconView fx:id="simulationPathInfoIcon" fill="#1976d2" glyphName="INFO" layoutX="427.0" layoutY="213.0" size="18" textAlignment="CENTER" wrappingWidth="12.0" />
             <FontAwesomeIconView fx:id="awsRegionInfoIcon" fill="#1976d2" glyphName="INFO" layoutX="427.0" layoutY="336.0" size="18" textAlignment="CENTER" wrappingWidth="12.0" />
             <JFXTextArea fx:id="logOutput" editable="false" layoutX="15.0" layoutY="897.0" prefHeight="153.0" prefWidth="431.0" style="-fx-background-color: #F5F5F5;" />
-            <JFXTextArea fx:id="envvars" layoutX="15.0" layoutY="518.0" prefHeight="153.0" prefWidth="431.0" style="-fx-background-color: #F5F5F5;" text="#VUS=100&#10;#URL=https://google.com&#10;#DURATION=60" />
+            <JFXTextArea fx:id="envvars" layoutX="15.0" layoutY="518.0" prefHeight="153.0" prefWidth="431.0" style="-fx-background-color: #F5F5F5;" text="#VUS=100&#10;#URL=https://google.com&#10;#DURATION=60&#10;#RAMP_U_DURATION=15" />
             <TextField fx:id="simulationNameTextField" layoutX="129.0" layoutY="232.0" prefHeight="28.0" prefWidth="283.0" style="-fx-background-color: white; -fx-border-color: grey;" text="BasicSimulation" />
             <Text layoutX="21.0" layoutY="251.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Simulation Name" />
             <FontAwesomeIconView fx:id="simulationNameInfoIcon" fill="#1976d2" glyphName="INFO" layoutX="427.0" layoutY="252.0" size="18" textAlignment="CENTER" wrappingWidth="12.0" />

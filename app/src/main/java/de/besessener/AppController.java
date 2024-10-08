@@ -11,10 +11,14 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.ListView;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.io.FileReader;
+import java.io.FileWriter;
+
 import javafx.concurrent.Task;
 import de.besessener.ShellScript;
 import de.besessener.ShellScriptResult;
@@ -26,7 +30,16 @@ import java.util.Map;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.regex.*;
+
+import javax.swing.JComboBox;
+import javax.swing.JSlider;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
 import java.nio.file.Paths;
+import java.nio.file.Path;
+import java.io.FileOutputStream;
+import java.util.Properties;
 
 public class AppController {
 
@@ -154,19 +167,47 @@ public class AppController {
         });
 
         // set default values
-        String homeDirectory = System.getProperty("user.home");
-        String filePath = Paths.get(homeDirectory, ".aws", "credentials").toString();
-        Set<String> sections = getSectionNames(filePath);
-        sections.add("default");
-        for (String section : sections) {
-            awsProfileComboBox.getItems().add(section);
-        }
-        awsProfileComboBox.setValue("default");
 
-        awsRegionComboBox.getItems().addAll("us-east-1", "us-east-2", "us-west-1", "us-west-2", "eu-central-1",
-                "eu-west-1", "eu-west-2", "eu-west-3", "eu-north-1", "ap-northeast-1", "ap-northeast-2",
-                "ap-northeast-3", "ap-southeast-1", "ap-southeast-2", "ap-south-1", "sa-east-1", "ca-central-1");
-        awsRegionComboBox.setValue("us-east-1");
+        // load state file from root
+        String homeDirectory = System.getProperty("user.home");
+        Path stateFilePath = Paths.get(homeDirectory, "cloud-trash-state.properties");
+        if (stateFilePath.toFile().exists()) {
+            // Properties object to hold key-value pairs
+            Properties properties = new Properties();
+
+            // Load properties from a file
+            try (FileInputStream in = new FileInputStream(stateFilePath.toFile().getAbsolutePath())) {
+                properties.load(in);
+
+                // Set the GUI components based on loaded properties
+                simulationNameTextField.setText(properties.getProperty("simulationName", ""));
+                simulationPathTextField.setText(properties.getProperty("simulationPath", ""));
+                numberOfLoadAgentsSlider.setValue(Integer.parseInt(properties.getProperty("numberOfLoadAgents", "0")));
+                agentCpuSlider.setValue(Integer.parseInt(properties.getProperty("agentCpu", "0")));
+                agentMemorySlider.setValue(Integer.parseInt(properties.getProperty("agentMemory", "0")));
+                awsProfileComboBox.setValue(properties.getProperty("awsProfile", "default"));
+                awsRegionComboBox.setValue(properties.getProperty("awsRegion", "us-east-1"));
+                envvars.setText(properties.getProperty("envvars", ""));
+
+                System.out.println("State loaded from: " + stateFilePath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            envvars.setText(properties.getProperty("envvars", ""));
+        } else {
+            String filePath = Paths.get(homeDirectory, ".aws", "credentials").toString();
+            Set<String> sections = getSectionNames(filePath);
+            sections.add("default");
+            for (String section : sections) {
+                awsProfileComboBox.getItems().add(section);
+            }
+            awsProfileComboBox.setValue("default");
+
+            awsRegionComboBox.getItems().addAll("us-east-1", "us-east-2", "us-west-1", "us-west-2", "eu-central-1",
+                    "eu-west-1", "eu-west-2", "eu-west-3", "eu-north-1", "ap-northeast-1", "ap-northeast-2",
+                    "ap-northeast-3", "ap-southeast-1", "ap-southeast-2", "ap-south-1", "sa-east-1", "ca-central-1");
+            awsRegionComboBox.setValue("us-east-1");
+        }
 
         logOutput.setText("Initialization done.\n");
     }
@@ -225,31 +266,34 @@ public class AppController {
         runTestButton.setDisable(true);
         runTestButtonIcon.setGlyphName("SPINNER");
         startSpinnerAnimation(runTestButtonIcon);
-        String scriptPath = "../scripts/run-test.sh";
-        Map<String, String> env = Map.of("AWS_PROFILE", awsProfileComboBox.getValue().toString(), "AWS_REGION",
-                awsRegionComboBox.getValue().toString(), "SLAVE_COUNT", numberOfAgentsInfo.getText(), "SLAVE_CPU",
-                agentsCpuInfo.getText(), "SLAVE_MEMORY", agentsMemoryInfo.getText(), "APP_NAME",
-                simulationNameTextField.getText());
-        for (String envvar : envvars.getText().split("\n")) {
-            String[] parts = envvar.split("=");
-            if (parts.length == 2 && !parts[0].startsWith("#")) {
-                env.put(parts[0], parts[1]);
-            }
-        }
-        Task<ShellScriptResult> task = ShellScript.runShellScript(scriptPath, logOutput, env);
-        task.setOnSucceeded(event -> {
-            stopSpinnerAnimation(runTestButtonIcon);
-            runTestButtonIcon.setGlyphName("PLAY");
-            runTestButton.setDisable(false);
-            handleButtonRefreshResultsClick();
-        });
 
-        task.setOnFailed(event -> {
-            stopSpinnerAnimation(runTestButtonIcon);
-            runTestButtonIcon.setGlyphName("PLAY");
-            runTestButton.setDisable(false);
-            handleButtonRefreshResultsClick();
-        });
+        writeProperties();
+        return;
+        // String scriptPath = "../scripts/run-test.sh";
+
+        // Map<String, String> env = new HashMap<>();
+        // env.put("AWS_PROFILE", awsProfileComboBox.getValue().toString());
+        // env.put("AWS_REGION", awsRegionComboBox.getValue().toString());
+        // env.put("SLAVE_COUNT", numberOfAgentsInfo.getText());
+        // env.put("SLAVE_CPU", agentsCpuInfo.getText());
+        // env.put("SLAVE_MEMORY", agentsMemoryInfo.getText());
+        // env.put("APP_NAME", simulationNameTextField.getText());
+        // env.put("ENV_VARS", envvars.getText().replace("\n", "###"));
+
+        // Task<ShellScriptResult> task = ShellScript.runShellScript(scriptPath, logOutput, env);
+        // task.setOnSucceeded(event -> {
+        //     stopSpinnerAnimation(runTestButtonIcon);
+        //     runTestButtonIcon.setGlyphName("PLAY");
+        //     runTestButton.setDisable(false);
+        //     handleButtonRefreshResultsClick();
+        // });
+
+        // task.setOnFailed(event -> {
+        //     stopSpinnerAnimation(runTestButtonIcon);
+        //     runTestButtonIcon.setGlyphName("PLAY");
+        //     runTestButton.setDisable(false);
+        //     handleButtonRefreshResultsClick();
+        // });
     }
 
     @FXML
@@ -340,5 +384,32 @@ public class AppController {
         }
 
         return sectionNames;
+    }
+
+    public void writeProperties() {
+        // Properties object to hold key-value pairs
+        Properties properties = new Properties();
+
+        // Set the properties from the GUI components
+        properties.setProperty("simulationName", simulationNameTextField.getText());
+        properties.setProperty("simulationPath", simulationPathTextField.getText());
+        properties.setProperty("numberOfLoadAgents", String.valueOf((int) numberOfLoadAgentsSlider.getValue()));
+        properties.setProperty("agentCpu", String.valueOf((int) agentCpuSlider.getValue()));
+        properties.setProperty("agentMemory", String.valueOf((int) agentMemorySlider.getValue()));
+        properties.setProperty("awsProfile", (String) awsProfileComboBox.getValue().toString());
+        properties.setProperty("awsRegion", (String) awsRegionComboBox.getValue().toString());
+        properties.setProperty("envvars", envvars.getText());
+
+        // File path for saving the properties
+        String homeDirectory = System.getProperty("user.home");
+        String stateFilePath = homeDirectory + "/cloud-trash-state.properties"; // Using .properties file extension
+
+        // Save properties to a file
+        try (FileOutputStream out = new FileOutputStream(stateFilePath)) {
+            properties.store(out, "Simulation Configuration");
+            System.out.println("State saved to: " + stateFilePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

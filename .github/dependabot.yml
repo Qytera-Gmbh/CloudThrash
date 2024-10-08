@@ -4,6 +4,8 @@ updates:
     directory: "/simulation"
     schedule:
       interval: "weekly"
+    ignore:
+      - dependency-name: "io.gatling.highcharts:gatling-charts-highcharts"
 
   - package-ecosystem: "maven"
     directory: "/ui"
@@ -19,3 +21,5 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+
+      

@@ -21,6 +21,7 @@ module "ecs" {
   grafana_admin_password = var.grafana_admin_password
   user                   = var.user
   app_name               = var.app_name
+  env_vars               = var.env_vars
   ecs_cluster_name       = var.ecs_cluster_name
 }
 

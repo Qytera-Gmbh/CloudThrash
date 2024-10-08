@@ -121,7 +121,7 @@ final_deletion_warning
 
 pushd ../terraform > /dev/null
 
-terraform destroy -auto-approve
+terraform destroy -auto-approve -lock=false
 
 aws ecr describe-repositories --repository-names $ECR_REPOSITORY --profile $AWS_PROFILE --region $AWS_REGION && \
 aws ecr delete-repository --repository-name $ECR_REPOSITORY --profile $AWS_PROFILE --region $AWS_REGION --force

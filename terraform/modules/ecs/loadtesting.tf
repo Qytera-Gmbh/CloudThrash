@@ -67,6 +67,10 @@ resource "aws_ecs_task_definition" "task" {
         {
           "name" : "IS_LEADER",
           "value" : "false"
+        },
+        {
+          "name" : "ENV_VARS",
+          "value" : var.env_vars
         }
       ]
     }
@@ -138,6 +142,10 @@ resource "aws_ecs_task_definition" "task_leader" {
         {
           "name" : "IS_LEADER",
           "value" : "true"
+        },
+        {
+          "name" : "ENV_VARS",
+          "value" : var.env_vars
         }
       ]
     }

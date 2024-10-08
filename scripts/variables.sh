@@ -14,5 +14,6 @@ SLAVE_CPU="${SLAVE_CPU:=2048}"
 SLAVE_COUNT="${SLAVE_COUNT:=2}" # vCPU quota limit needs to be considered, Grafana and Graphite will also need same amount of resources
 
 APP_NAME="${APP_NAME:=BasicLoadSimulation}"
+ENV_VARS="${ENV_VARS:=}"
 
 export AWS_PAGER=""

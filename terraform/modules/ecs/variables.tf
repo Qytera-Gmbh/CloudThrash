@@ -15,3 +15,4 @@ variable "grafana_admin_password" {}
 variable "user" {}
 variable "app_name" {}
 variable "ecs_cluster_name" {}
+variable "env_vars" {}
