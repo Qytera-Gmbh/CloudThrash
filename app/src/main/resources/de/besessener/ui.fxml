@@ -48,7 +48,7 @@
                   <Font name="System Bold" size="12.0" />
                </font>
                <graphic>
-                  <FontAwesomeIconView fill="WHITE" glyphName="POWER_OFF" />
+                  <FontAwesomeIconView fx:id="stopTestButtonIcon" fill="WHITE" glyphName="POWER_OFF" />
                </graphic>
             </JFXButton>
             <JFXButton fx:id="deleteResourcesButton" layoutX="237.0" layoutY="125.0" onAction="#handleButtonDeleteResourcesClick" prefHeight="41.0" prefWidth="207.0" ripplerFill="BLACK" style="-fx-background-color: #1976D2;" text="Delete All Resources" textFill="WHITE">
@@ -80,8 +80,6 @@
             <Text layoutX="22.0" layoutY="422.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Agent CPU:" />
             <Text layoutX="22.0" layoutY="459.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Agent Memory" />
             <Text fx:id="numberOfAgentsInfo" layoutX="412.0" layoutY="387.0" strokeType="OUTSIDE" strokeWidth="0.0" text="5" />
-            <Text fx:id="agentsCpuInfo" layoutX="412.0" layoutY="422.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2048" />
-            <Text fx:id="agentsMemoryInfo" layoutX="413.0" layoutY="459.0" strokeType="OUTSIDE" strokeWidth="0.0" text="4096" />
             <Text layoutX="15.0" layoutY="715.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Results:" />
             <TextField fx:id="simulationPathTextField" layoutX="129.0" layoutY="193.0" prefHeight="28.0" prefWidth="283.0" style="-fx-background-color: white; -fx-border-color: grey;" text="demo" />
             <Text layoutX="21.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gatling Simulation:" />
@@ -101,9 +99,7 @@
                </tooltip>
             </JFXButton>
             <Text layoutX="15.0" layoutY="514.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Environment Variables:" />
-            <JFXSlider fx:id="numberOfLoadAgentsSlider" blockIncrement="1.0" layoutX="132.0" layoutY="376.0" majorTickUnit="4.0" max="25.0" min="1.0" minorTickCount="1" prefHeight="14.0" prefWidth="265.0" showTickLabels="true" stylesheets="@./slider.css" value="5.0" />
-            <JFXSlider fx:id="agentCpuSlider" blockIncrement="1.0" layoutX="131.0" layoutY="410.0" majorTickUnit="16384.0" max="16384.0" min="512.0" minorTickCount="0" prefHeight="14.0" prefWidth="265.0" showTickLabels="true" stylesheets="@./slider.css" value="2048.0" />
-            <JFXSlider fx:id="agentMemorySlider" layoutX="131.0" layoutY="447.0" majorTickUnit="32768.0" max="32768.0" min="512.0" minorTickCount="1" prefHeight="14.0" prefWidth="265.0" showTickLabels="true" stylesheets="@./slider.css" value="4096.0" />
+            <JFXSlider fx:id="numberOfLoadAgentsSlider" blockIncrement="1.0" layoutX="132.0" layoutY="376.0" majorTickUnit="4.0" max="25.0" min="1.0" prefHeight="14.0" prefWidth="265.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" stylesheets="@./slider.css" value="5.0" />
             <JFXButton fx:id="refreshResultsButton" layoutX="417.0" layoutY="720.0" onAction="#handleButtonRefreshResultsClick" prefHeight="25.0" prefWidth="26.0" style="-fx-background-color: #ffffff00;">
                <graphic>
                   <FontAwesomeIconView fx:id="refreshButtonIcon" glyphName="REFRESH" size="18" />
@@ -118,6 +114,8 @@
             <TextField fx:id="simulationNameTextField" layoutX="129.0" layoutY="232.0" prefHeight="28.0" prefWidth="283.0" style="-fx-background-color: white; -fx-border-color: grey;" text="BasicSimulation" />
             <Text layoutX="21.0" layoutY="251.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Simulation Name" />
             <FontAwesomeIconView fx:id="simulationNameInfoIcon" fill="#1976d2" glyphName="INFO" layoutX="427.0" layoutY="252.0" size="18" textAlignment="CENTER" wrappingWidth="12.0" />
+            <JFXComboBox fx:id="agentCpuComboBox" editable="true" layoutX="129.0" layoutY="405.0" prefHeight="25.0" prefWidth="283.0" promptText="Select vCPU Units" />
+            <JFXComboBox fx:id="agentMemoryComboBox" editable="true" layoutX="129.0" layoutY="442.0" prefHeight="25.0" prefWidth="283.0" promptText="Select Memory" />
          </children>
       </AnchorPane>
    </content>

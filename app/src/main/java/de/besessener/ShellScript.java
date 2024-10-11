@@ -27,6 +27,8 @@ public class ShellScript {
             protected ShellScriptResult call() throws Exception {
                 String gitBashPath = "C:/Program Files/Git/bin/bash.exe";
 
+                logBuilder = new StringBuilder();
+                logBuilder.append(logOutput.getText());
                 logBuilder.append(getTimestamp()).append("Running ").append(scriptPath).append("\n");
 
                 // Create ProcessBuilder and redirect error stream to output stream

@@ -30,8 +30,8 @@ resource "aws_ecs_task_definition" "graphite_task" {
   family                   = "graphite-task"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
-  cpu                      = var.slave_cpu
-  memory                   = var.slave_memory
+  cpu                      = 2048
+  memory                   = 4096
 
   container_definitions = jsonencode([{
     name      = "graphite"

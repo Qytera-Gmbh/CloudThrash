@@ -9,6 +9,8 @@ import javafx.scene.control.Tooltip;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -30,11 +32,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.regex.*;
-
-import javax.swing.JComboBox;
-import javax.swing.JSlider;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
 
 import java.nio.file.Paths;
 import java.nio.file.Path;
@@ -79,6 +76,9 @@ public class AppController {
     private FontAwesomeIconView runTestButtonIcon;
 
     @FXML
+    private FontAwesomeIconView stopTestButtonIcon;
+
+    @FXML
     private FontAwesomeIconView openGrafanaButtonIcon;
 
     @FXML
@@ -91,19 +91,19 @@ public class AppController {
     private TextField simulationNameTextField;
 
     @FXML
-    private ComboBox awsProfileComboBox;
+    private ComboBox<String> awsProfileComboBox;
 
     @FXML
-    private ComboBox awsRegionComboBox;
+    private ComboBox<String> awsRegionComboBox;
 
     @FXML
     private Slider numberOfLoadAgentsSlider;
 
     @FXML
-    private Slider agentCpuSlider;
+    private ComboBox<String> agentCpuComboBox;
 
     @FXML
-    private Slider agentMemorySlider;
+    private ComboBox<String> agentMemoryComboBox;
 
     @FXML
     private FontAwesomeIconView simulationPathInfoIcon;
@@ -119,12 +119,6 @@ public class AppController {
 
     @FXML
     private Text numberOfAgentsInfo;
-
-    @FXML
-    private Text agentsCpuInfo;
-
-    @FXML
-    private Text agentsMemoryInfo;
 
     @FXML
     private FontAwesomeIconView envvarInfoIcon;
@@ -150,41 +144,83 @@ public class AppController {
             }
         });
 
-        agentCpuSlider.valueProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                int roundedValue = (int) Math.round(newValue.doubleValue());
-                agentsCpuInfo.setText(String.valueOf(roundedValue));
+        agentCpuComboBox.getItems().addAll("512", "1024", "2048", "4096", "8192", "16384");
+        agentMemoryComboBox.getItems().clear();
+        agentCpuComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+            agentMemoryComboBox.getItems().clear();
+            switch (newValue) {
+                case "512":
+                    agentMemoryComboBox.getItems().addAll("1024", "2048", "3072", "4096");
+                    break;
+                case "1024":
+                    agentMemoryComboBox.getItems().addAll("2048", "3072", "4096", "5120", "6144", "7168", "8192");
+                    break;
+                case "2048":
+                    for (int i = 4; i <= 16; i++) {
+                        agentMemoryComboBox.getItems().add(i * 1024 + "");
+                    }
+                    break;
+                case "4096":
+                    for (int i = 8; i <= 30; i++) {
+                        agentMemoryComboBox.getItems().add(i * 1024 + "");
+                    }
+                    break;
+                case "8192":
+                    for (int i = 16; i <= 60; i += 4) {
+                        agentMemoryComboBox.getItems().add(i * 1024 + "");
+                    }
+                    break;
+                case "16384":
+                    for (int i = 32; i <= 120; i += 8) {
+                        agentMemoryComboBox.getItems().add(i * 1024 + "");
+                    }
+                    break;
             }
+            agentMemoryComboBox.setValue(agentMemoryComboBox.getItems().get(0));
         });
+        agentCpuComboBox.setValue("512"); // This will trigger the listener and set the initial memory options
 
-        agentMemorySlider.valueProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                int roundedValue = (int) Math.round(newValue.doubleValue());
-                agentsMemoryInfo.setText(String.valueOf(roundedValue));
-            }
-        });
+        String homeDirectory = System.getProperty("user.home");
+        String filePath = Paths.get(homeDirectory, ".aws", "credentials").toString();
+        Set<String> sections = getSectionNames(filePath);
+        sections.add("default");
+        for (String section : sections) {
+            awsProfileComboBox.getItems().add(section);
+        }
+
+        awsRegionComboBox.getItems().addAll("us-east-1", "us-east-2", "us-west-1", "us-west-2", "eu-central-1",
+                "eu-west-1", "eu-west-2", "eu-west-3", "eu-north-1", "ap-northeast-1", "ap-northeast-2",
+                "ap-northeast-3", "ap-southeast-1", "ap-southeast-2", "ap-south-1", "sa-east-1", "ca-central-1");
 
         // set default values
-
         // load state file from root
-        String homeDirectory = System.getProperty("user.home");
         Path stateFilePath = Paths.get(homeDirectory, "cloud-trash-state.properties");
         if (stateFilePath.toFile().exists()) {
-            // Properties object to hold key-value pairs
             Properties properties = new Properties();
 
-            // Load properties from a file
             try (FileInputStream in = new FileInputStream(stateFilePath.toFile().getAbsolutePath())) {
                 properties.load(in);
 
-                // Set the GUI components based on loaded properties
                 simulationNameTextField.setText(properties.getProperty("simulationName", ""));
                 simulationPathTextField.setText(properties.getProperty("simulationPath", ""));
-                numberOfLoadAgentsSlider.setValue(Integer.parseInt(properties.getProperty("numberOfLoadAgents", "0")));
-                agentCpuSlider.setValue(Integer.parseInt(properties.getProperty("agentCpu", "0")));
-                agentMemorySlider.setValue(Integer.parseInt(properties.getProperty("agentMemory", "0")));
+                numberOfLoadAgentsSlider
+                        .setValue(Double.parseDouble(properties.getProperty("numberOfLoadAgents", "0")));
+
+                // Parse CPU and Memory values as Integers
+                try {
+                    String agentCpu = properties.getProperty("agentCpu", "512");
+                    agentCpuComboBox.setValue(agentCpu);
+                } catch (NumberFormatException e) {
+                    agentCpuComboBox.setValue("512"); // Default value if parsing fails
+                }
+
+                try {
+                    String agentMemory = properties.getProperty("agentMemory", "1024");
+                    agentMemoryComboBox.setValue(agentMemory);
+                } catch (NumberFormatException e) {
+                    agentMemoryComboBox.setValue("1024"); // Default value if parsing fails
+                }
+
                 awsProfileComboBox.setValue(properties.getProperty("awsProfile", "default"));
                 awsRegionComboBox.setValue(properties.getProperty("awsRegion", "us-east-1"));
                 envvars.setText(properties.getProperty("envvars", ""));
@@ -194,19 +230,6 @@ public class AppController {
                 e.printStackTrace();
             }
             envvars.setText(properties.getProperty("envvars", ""));
-        } else {
-            String filePath = Paths.get(homeDirectory, ".aws", "credentials").toString();
-            Set<String> sections = getSectionNames(filePath);
-            sections.add("default");
-            for (String section : sections) {
-                awsProfileComboBox.getItems().add(section);
-            }
-            awsProfileComboBox.setValue("default");
-
-            awsRegionComboBox.getItems().addAll("us-east-1", "us-east-2", "us-west-1", "us-west-2", "eu-central-1",
-                    "eu-west-1", "eu-west-2", "eu-west-3", "eu-north-1", "ap-northeast-1", "ap-northeast-2",
-                    "ap-northeast-3", "ap-southeast-1", "ap-southeast-2", "ap-south-1", "sa-east-1", "ca-central-1");
-            awsRegionComboBox.setValue("us-east-1");
         }
 
         logOutput.setText("Initialization done.\n");
@@ -215,7 +238,9 @@ public class AppController {
     @FXML
     private void handleButtonCheckDependenciesClick() {
         String scriptPath = "../scripts/check-dependencies.sh";
-        ShellScript.runShellScript(scriptPath, logOutput);
+        Task<ShellScriptResult> task = ShellScript.runShellScript(scriptPath, logOutput);
+
+        new Thread(task).start();
     }
 
     @FXML
@@ -268,38 +293,70 @@ public class AppController {
         startSpinnerAnimation(runTestButtonIcon);
 
         writeProperties();
-        return;
-        // String scriptPath = "../scripts/run-test.sh";
 
-        // Map<String, String> env = new HashMap<>();
-        // env.put("AWS_PROFILE", awsProfileComboBox.getValue().toString());
-        // env.put("AWS_REGION", awsRegionComboBox.getValue().toString());
-        // env.put("SLAVE_COUNT", numberOfAgentsInfo.getText());
-        // env.put("SLAVE_CPU", agentsCpuInfo.getText());
-        // env.put("SLAVE_MEMORY", agentsMemoryInfo.getText());
-        // env.put("APP_NAME", simulationNameTextField.getText());
-        // env.put("ENV_VARS", envvars.getText().replace("\n", "###"));
+        String scriptPath = "../scripts/run-test.sh";
+        logOutput.setText("");
 
-        // Task<ShellScriptResult> task = ShellScript.runShellScript(scriptPath, logOutput, env);
-        // task.setOnSucceeded(event -> {
-        //     stopSpinnerAnimation(runTestButtonIcon);
-        //     runTestButtonIcon.setGlyphName("PLAY");
-        //     runTestButton.setDisable(false);
-        //     handleButtonRefreshResultsClick();
-        // });
+        Map<String, String> env = new HashMap<>();
+        env.put("AWS_PROFILE", awsProfileComboBox.getValue());
+        env.put("AWS_REGION", awsRegionComboBox.getValue());
+        env.put("SLAVE_COUNT", numberOfAgentsInfo.getText());
+        env.put("SLAVE_CPU", agentCpuComboBox.getValue().toString());
+        env.put("SLAVE_MEMORY", agentMemoryComboBox.getValue().toString());
+        env.put("APP_NAME", simulationNameTextField.getText());
+        env.put("ENV_VARS", envvars.getText().replace("\n", "###"));
 
-        // task.setOnFailed(event -> {
-        //     stopSpinnerAnimation(runTestButtonIcon);
-        //     runTestButtonIcon.setGlyphName("PLAY");
-        //     runTestButton.setDisable(false);
-        //     handleButtonRefreshResultsClick();
-        // });
+        Task<ShellScriptResult> task = ShellScript.runShellScript(scriptPath, logOutput, env);
+        task.setOnSucceeded(event -> {
+            stopSpinnerAnimation(runTestButtonIcon);
+            runTestButtonIcon.setGlyphName("PLAY");
+            runTestButton.setDisable(false);
+            handleButtonRefreshResultsClick();
+
+            stopTestButtonIcon.setGlyphName("POWER_OFF");
+            stopSpinnerAnimation(stopTestButtonIcon);
+            stopTestButton.setDisable(true);
+        });
+
+        task.setOnFailed(event -> {
+            stopSpinnerAnimation(runTestButtonIcon);
+            runTestButtonIcon.setGlyphName("PLAY");
+            runTestButton.setDisable(false);
+            handleButtonRefreshResultsClick();
+
+            stopTestButtonIcon.setGlyphName("POWER_OFF");
+            stopSpinnerAnimation(stopTestButtonIcon);
+            stopTestButton.setDisable(true);
+        });
+
+        task.setOnRunning(event -> {
+            ChangeListener<String> listener = new ChangeListener<String>() {
+                @Override
+                public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                    if (logOutput.getText().contains("Current task status: PENDING")
+                            || logOutput.getText().contains("Current task status: RUNNING")) {
+                        stopTestButton.setDisable(false);
+                        logOutput.textProperty().removeListener(this);
+                    }
+                }
+            };
+
+            logOutput.textProperty().addListener(listener);
+        });
+
+        new Thread(task).start();
     }
 
     @FXML
     private void handleButtonStopTestClick() {
-        String scriptPath = "../scripts/stop-test.sh";
-        ShellScript.runShellScript(scriptPath, logOutput);
+        stopTestButtonIcon.setGlyphName("SPINNER");
+        startSpinnerAnimation(stopTestButtonIcon);
+        stopTestButton.setDisable(true);
+
+        String scriptPath = "../scripts/stop-test-all.sh";
+        Task<ShellScriptResult> task = ShellScript.runShellScript(scriptPath, logOutput);
+
+        new Thread(task).start();
     }
 
     @FXML
@@ -321,6 +378,8 @@ public class AppController {
             openGrafanaButtonIcon.setGlyphName("TACHOMETER");
             openGrafanaButton.setDisable(false);
         });
+
+        new Thread(task).start();
     }
 
     @FXML
@@ -328,7 +387,7 @@ public class AppController {
         deleteResourcesButton.setDisable(true);
         deleteResourcesButtonIcon.setGlyphName("SPINNER");
         startSpinnerAnimation(deleteResourcesButtonIcon);
-        String scriptPath = "../scripts/delete-all-resources.sh -y";
+        String scriptPath = "../scripts/delete-all-resources-approved.sh";
         Task<ShellScriptResult> task = ShellScript.runShellScript(scriptPath, logOutput);
 
         task.setOnSucceeded(event -> {
@@ -342,6 +401,8 @@ public class AppController {
             deleteResourcesButtonIcon.setGlyphName("TRASH");
             deleteResourcesButton.setDisable(false);
         });
+
+        new Thread(task).start();
     }
 
     private void startSpinnerAnimation(FontAwesomeIconView icon) {
@@ -394,10 +455,10 @@ public class AppController {
         properties.setProperty("simulationName", simulationNameTextField.getText());
         properties.setProperty("simulationPath", simulationPathTextField.getText());
         properties.setProperty("numberOfLoadAgents", String.valueOf((int) numberOfLoadAgentsSlider.getValue()));
-        properties.setProperty("agentCpu", String.valueOf((int) agentCpuSlider.getValue()));
-        properties.setProperty("agentMemory", String.valueOf((int) agentMemorySlider.getValue()));
-        properties.setProperty("awsProfile", (String) awsProfileComboBox.getValue().toString());
-        properties.setProperty("awsRegion", (String) awsRegionComboBox.getValue().toString());
+        properties.setProperty("agentCpu", agentCpuComboBox.getValue());
+        properties.setProperty("agentMemory", agentMemoryComboBox.getValue());
+        properties.setProperty("awsProfile", awsProfileComboBox.getValue());
+        properties.setProperty("awsRegion", awsRegionComboBox.getValue());
         properties.setProperty("envvars", envvars.getText());
 
         // File path for saving the properties
