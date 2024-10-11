@@ -71,6 +71,26 @@ resource "aws_ecs_task_definition" "task" {
         {
           "name" : "ENV_VARS",
           "value" : var.env_vars
+        },
+        {
+          "name" : "SLAVE_COUNT", 
+          "value" : tostring(var.slave_count)
+        },
+        {
+          "name" : "SLAVE_CPU", 
+          "value" : tostring(var.slave_cpu)
+        },
+        {
+          "name" : "SLAVE_MEMORY", 
+          "value" : tostring(var.slave_memory)
+        },
+        {
+          "name" : "AWS_ACCOUNT", 
+          "value" : var.aws_account_id
+        },
+        {
+          "name" : "AWS_REGION", 
+          "value" : var.aws_region
         }
       ]
     }
@@ -146,6 +166,26 @@ resource "aws_ecs_task_definition" "task_leader" {
         {
           "name" : "ENV_VARS",
           "value" : var.env_vars
+        },
+        {
+          "name" : "SLAVE_COUNT", 
+          "value" : tostring(var.slave_count)
+        },
+        {
+          "name" : "SLAVE_CPU", 
+          "value" : tostring(var.slave_cpu)
+        },
+        {
+          "name" : "SLAVE_MEMORY", 
+          "value" : tostring(var.slave_memory)
+        },
+        {
+          "name" : "AWS_ACCOUNT", 
+          "value" : var.aws_account_id
+        },
+        {
+          "name" : "AWS_REGION", 
+          "value" : var.aws_region
         }
       ]
     }

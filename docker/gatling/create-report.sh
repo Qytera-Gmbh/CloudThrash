@@ -53,6 +53,8 @@ fi
 
 # Create an empty status file
 touch $STATUS_FILE
+# Write all environment variables to the status file
+env | sort > $STATUS_FILE
 
 # Compress the entire local directory using 7z
 ZIP_FILE="report.7z"
