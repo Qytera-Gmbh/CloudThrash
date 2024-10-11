@@ -49,6 +49,9 @@ public class AppController {
     private Button refreshResultsButton;
 
     @FXML
+    private Button downloadResultsButton;
+
+    @FXML
     private Button runTestButton;
 
     @FXML
@@ -71,6 +74,9 @@ public class AppController {
 
     @FXML
     private FontAwesomeIconView refreshButtonIcon;
+
+    @FXML
+    private FontAwesomeIconView downloadResultsButtonIcon;
 
     @FXML
     private FontAwesomeIconView runTestButtonIcon;
@@ -400,6 +406,39 @@ public class AppController {
             stopSpinnerAnimation(deleteResourcesButtonIcon);
             deleteResourcesButtonIcon.setGlyphName("TRASH");
             deleteResourcesButton.setDisable(false);
+        });
+
+        new Thread(task).start();
+    }
+
+    @FXML
+    private void resultsClicked() {
+        Map<String, String> env = new HashMap<>();
+
+        try {
+            env.put("FILE_LOCATION", results.getSelectionModel().getSelectedItem().split(" ")[2]);
+        } catch (Exception e) {
+            logOutput.setText("A result to download must be selected.\n");
+            return;
+        }
+
+        downloadResultsButtonIcon.setGlyphName("SPINNER");
+        startSpinnerAnimation(downloadResultsButtonIcon);
+        downloadResultsButton.setDisable(true);
+
+        String scriptPath = "../scripts/download.sh";
+        Task<ShellScriptResult> task = ShellScript.runShellScript(scriptPath, logOutput, env);
+
+        task.setOnSucceeded(event -> {
+            downloadResultsButtonIcon.setGlyphName("SAVE");
+            stopSpinnerAnimation(downloadResultsButtonIcon);
+            downloadResultsButton.setDisable(false);
+        });
+
+        task.setOnFailed(event -> {
+            downloadResultsButtonIcon.setGlyphName("SAVE");
+            stopSpinnerAnimation(downloadResultsButtonIcon);
+            downloadResultsButton.setDisable(false);
         });
 
         new Thread(task).start();

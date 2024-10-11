@@ -100,7 +100,7 @@
             </JFXButton>
             <Text layoutX="15.0" layoutY="514.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Environment Variables:" />
             <JFXSlider fx:id="numberOfLoadAgentsSlider" blockIncrement="1.0" layoutX="132.0" layoutY="376.0" majorTickUnit="4.0" max="25.0" min="1.0" prefHeight="14.0" prefWidth="265.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" stylesheets="@./slider.css" value="5.0" />
-            <JFXButton fx:id="refreshResultsButton" layoutX="417.0" layoutY="720.0" onAction="#handleButtonRefreshResultsClick" prefHeight="25.0" prefWidth="26.0" style="-fx-background-color: #ffffff00;">
+            <JFXButton fx:id="refreshResultsButton" layoutX="389.0" layoutY="694.0" onAction="#handleButtonRefreshResultsClick" prefHeight="25.0" prefWidth="26.0" style="-fx-background-color: #ffffff00;">
                <graphic>
                   <FontAwesomeIconView fx:id="refreshButtonIcon" glyphName="REFRESH" size="18" />
                </graphic>
@@ -116,6 +116,11 @@
             <FontAwesomeIconView fx:id="simulationNameInfoIcon" fill="#1976d2" glyphName="INFO" layoutX="427.0" layoutY="252.0" size="18" textAlignment="CENTER" wrappingWidth="12.0" />
             <JFXComboBox fx:id="agentCpuComboBox" editable="true" layoutX="129.0" layoutY="405.0" prefHeight="25.0" prefWidth="283.0" promptText="Select vCPU Units" />
             <JFXComboBox fx:id="agentMemoryComboBox" editable="true" layoutX="129.0" layoutY="442.0" prefHeight="25.0" prefWidth="283.0" promptText="Select Memory" />
+            <JFXButton fx:id="downloadResultsButton" layoutX="416.0" layoutY="694.0" onAction="#resultsClicked" prefHeight="25.0" prefWidth="26.0" style="-fx-background-color: #ffffff00;">
+               <graphic>
+                  <FontAwesomeIconView fx:id="downloadResultsButtonIcon" glyphName="SAVE" size="18" />
+               </graphic>
+            </JFXButton>
          </children>
       </AnchorPane>
    </content>
