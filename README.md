@@ -32,7 +32,7 @@ Technology Map:
     -   `grafana/`: Configuration files for Grafana dashboards and data sources.
     -   `graphite/`: Configuration for Graphite.
 
--   **scripts/**: Shell scripts for managing the testing environment and processes.
+-   **scripts/**: Shell scripts for managing the testing environment and processes; controlled by the UI and usually not required to be called directly.
 
     -   `run-test.sh`: Script to deploy Docker containers, create infrastructure, and run the Gatling test. **This is the entry point.** If nothing is running OR if infrastructure is up already, it will trigger a new test.
     -   `stop-test.sh`: Script to stop a test, with user selection from running tests.
@@ -70,7 +70,7 @@ Technology Map:
 
 2. **Run the GUI**
 
-    Execute `run.sh` in the root to open the GUI. It should be self explanatory.
+    Execute `run.sh` in the root to open the GUI. It should be self explanatory with tooltips and stuff.
 
     <img src="docs/screenshot.png" alt="Screenshot" width="500" />
 
