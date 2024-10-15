@@ -112,7 +112,7 @@ Technology Map:
 
     After the test is complete, you clean up resources using the `delete-all-resources.sh` script. **Be cautious: this will delete all resources, including the S3 bucket (containing the results) and the ECR registry with the docker images. If you restart your tests you have to upload the docker images again and results are lost forever.**
 
-    The entire setup won't cause much costs. ECR and S3 you pay per GB, but the results and images don't need much space. ECS itself doesn't cost anything when there are no running tasks. Graphite and Grafana might cause the highest cost as they are constantly running services. CloudMap will cost a bit for using the Graphite DNS. So always consider this.
+    The entire setup won't cause much costs. For ECR and S3 you pay per GB, but the results and images don't need much space. ECS itself doesn't cost anything when there are no running tasks. Graphite and Grafana might cause the highest cost as they are constantly running services. CloudMap will cost a bit for using the Graphite DNS. So always consider this.
 
     ```bash
     ./scripts/delete-all-resources.sh
@@ -126,7 +126,7 @@ Architecture Diagram:
 
 ![](docs/architecture.drawio.png)
 
-It is not meant to be a fully web oriented app. This tool has a local JavaFX interface (TODO) and shell scripts to trigger load tests inside the cloud and retrieve results after. Locally the configuration is done, docker images are built and cloud infrastructure is created.
+It is not meant to be a fully web oriented app. This tool has a local JavaFX interface and shell scripts to trigger load tests inside the cloud and retrieve results after. Locally the configuration is done, docker images are built and cloud infrastructure is created.
 
 It is important to notice, the the entire app works serverless with Fargate instances. The amount of `vCPU` for Fargate is usually restricted and you might need to increase the quota accordin to your needs.
 
